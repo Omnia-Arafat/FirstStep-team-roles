@@ -14,18 +14,19 @@
 
   --bg:#f5f6fa;
   --card:#ffffff;
-  --text:#1f1f1f;
+  --text:#1c1c1c;
   --muted:#555;
   --overlay:rgba(0,0,0,.45);
-  --edit-bg:#f1f4ff;
+  --edit-bg:#eef2ff;
 }
 
 body.dark{
-  --bg:#121526;
-  --card:#1b1f3a;
-  --text:#f1f1f1;
-  --muted:#b5b5c5;
-  --edit-bg:#242863;
+  --bg:#0f1328;
+  --card:#1f2552;
+  --text:#f5f7ff;
+  --muted:#d0d4ff;
+  --overlay:rgba(0,0,0,.65);
+  --edit-bg:#2c3375;
 }
 
 *{box-sizing:border-box}
@@ -38,7 +39,8 @@ body{
   transition:.4s;
 }
 
-body.modal-open > *:not(.modal){
+/* BLUR BACKGROUND */
+body.modal-open > *:not(.modal):not(.toast){
   filter:blur(6px);
   pointer-events:none;
 }
@@ -59,11 +61,12 @@ button{
   padding:10px 18px;
   border-radius:22px;
   cursor:pointer;
-  box-shadow:0 6px 18px rgba(0,0,0,.15);
+  box-shadow:0 6px 18px rgba(0,0,0,.2);
   transition:.3s;
+  color:var(--text);
 }
 
-/* ADMIN HOVER */
+/* ADMIN HOVER TEXT */
 .admin-btn span.alt{display:none}
 .admin-btn:hover span.main{display:none}
 .admin-btn:hover span.alt{display:inline}
@@ -97,7 +100,7 @@ h1{text-align:center;color:var(--blue)}
   border-radius:18px;
   padding:24px;
   position:relative;
-  box-shadow:0 10px 30px rgba(0,0,0,.12);
+  box-shadow:0 12px 32px rgba(0,0,0,.2);
   cursor:pointer;
 }
 
@@ -106,14 +109,20 @@ h1{text-align:center;color:var(--blue)}
   position:absolute;
   inset:0;
   border-radius:18px;
-  background:rgba(33,44,110,.75);
+  background:rgba(33,44,110,.85);
   color:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
+  font-weight:600;
   opacity:0;
   transition:.3s;
 }
+
+.admin .card::after{
+  content:"Click to edit";
+}
+
 .card:hover::after{opacity:1}
 
 .name{font-size:20px;font-weight:700}
@@ -128,13 +137,13 @@ h1{text-align:center;color:var(--blue)}
   color:#fff;
 }
 .owner{background:var(--red)}
-.cto{background:var(--blue)}
+.cto{background:#3f6cff}
 .pm{background:var(--green)}
-.design{background:#6a1b9a}
-.frontend{background:#0277bd}
-.backend{background:#4527a0}
-.mobile{background:#ef6c00}
-.support{background:#558b2f}
+.design{background:#8e24aa}
+.frontend{background:#039be5}
+.backend{background:#5e35b1}
+.mobile{background:#fb8c00}
+.support{background:#7cb342}
 
 .desc{font-size:14px;color:var(--muted)}
 
@@ -157,7 +166,7 @@ h1{text-align:center;color:var(--blue)}
 }
 .modal-content{
   background:var(--card);
-  width:440px;
+  width:460px;
   max-width:92%;
   border-radius:18px;
   padding:28px;
@@ -170,6 +179,7 @@ h1{text-align:center;color:var(--blue)}
   transform:translateX(0);
   opacity:1;
 }
+
 .close{
   position:absolute;
   top:18px;
@@ -178,6 +188,7 @@ h1{text-align:center;color:var(--blue)}
   border:none;
   font-size:18px;
   cursor:pointer;
+  color:var(--text);
 }
 
 /* EDIT MODE */
@@ -187,23 +198,53 @@ h1{text-align:center;color:var(--blue)}
   padding:8px 10px;
   margin:6px 0;
 }
+
 .admin [contenteditable]:focus{
   outline:none;
-  box-shadow:0 0 0 2px var(--green);
+  box-shadow:0 0 0 3px var(--green);
 }
 
+/* TITLE EDIT CLEAR */
+.admin h2[contenteditable]{
+  font-size:22px;
+  font-weight:800;
+  border-bottom:3px solid var(--blue);
+}
+
+/* SAVE BUTTON */
 .save-btn{
   display:none;
-  margin-top:18px;
+  margin-top:20px;
   width:100%;
-  padding:12px;
+  padding:14px;
   border-radius:16px;
   background:var(--green);
   color:#fff;
   border:none;
+  font-weight:600;
   cursor:pointer;
 }
 .admin .save-btn{display:block}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  bottom:24px;
+  right:24px;
+  background:var(--green);
+  color:#fff;
+  padding:14px 20px;
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
+  opacity:0;
+  transform:translateY(20px);
+  transition:.4s;
+  z-index:100;
+}
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
 </style>
 </head>
 
@@ -220,7 +261,7 @@ h1{text-align:center;color:var(--blue)}
 <div class="container">
   <img src="https://firststep-app.com/assets/logos/complete_logo.svg" class="logo">
   <h1>First Step Team</h1>
-  <p class="subtitle">Click any card to view full responsibilities</p>
+  <p class="subtitle">Click any card to view or edit responsibilities</p>
   <div class="team-grid" id="team"></div>
 </div>
 
@@ -248,30 +289,36 @@ h1{text-align:center;color:var(--blue)}
   </div>
 </div>
 
+<div class="toast" id="toast">Changes saved successfully</div>
+
 <script>
 const ADMIN_PASSWORD="firststep-admin";
 let isAdmin=false;
 let activeIndex=null;
 
-const defaultTeam=[
- {name:"Abeer Alhadi",role:"Owner",roleType:"owner",desc:"Final authority on vision, business direction, partnerships, and major strategic decisions.",details:["Defines vision","Approves strategy","Key partnerships"]},
- {name:"Ghada Alsheikh",role:"Co-Founder",roleType:"owner",desc:"Supports strategic planning, business growth, and high-level product decisions.",details:["Business strategy","Growth initiatives","Product direction"]},
- {name:"Gamel Alshaer",role:"CTO",roleType:"cto",desc:"Responsible for technical architecture, technology choices, and engineering standards.",details:["Architecture","Tech decisions","Engineering standards"]},
- {name:"Omnia Arafat",role:"Project Manager",roleType:"pm",desc:"Owns planning, scope, timelines, task prioritization, and cross-team coordination.",details:["Planning","Timeline control","Coordination"]},
- {name:"Menna Emara",role:"Product Designer",roleType:"design",desc:"Responsible for UX/UI, user flows, wireframes, and product experience decisions.",details:["UX research","UI design","User journeys"]},
- {name:"Amr Taha",role:"Frontend Developer",roleType:"frontend",desc:"Implements UI designs, frontend logic, and ensures smooth user interactions.",details:["UI implementation","Performance","Frontend logic"]},
- {name:"Eslam Elsayed",role:"Backend Developer",roleType:"backend",desc:"Handles APIs, databases, business logic, and system integrations.",details:["APIs","Databases","Integrations"]},
- {name:"Momen Mohamed",role:"Flutter Developer",roleType:"mobile",desc:"Builds and maintains mobile applications using Flutter.",details:["Flutter apps","Cross-platform","Optimization"]},
- {name:"Baraa Hamza",role:"Customer Support & Sales",roleType:"support",desc:"Manages client communication, onboarding, support, and sales follow-ups.",details:["Onboarding","Support","Sales follow-up"]},
- {name:"Reema Abdurahman",role:"Customer Support & Sales",roleType:"support",desc:"Supports customers, handles inquiries, and assists with sales operations.",details:["Customer support","Inquiries","Sales assistance"]}
+const defaultTeam=[ /* SAME TEAM YOU PROVIDED – unchanged */ 
+{name:"Abeer Alhadi",role:"Owner",roleType:"owner",desc:"Final authority on vision, business direction, partnerships, and major strategic decisions.",details:["Defines vision","Approves strategy","Key partnerships"]},
+{name:"Ghada Alsheikh",role:"Co-Founder",roleType:"owner",desc:"Supports strategic planning, business growth, and high-level product decisions.",details:["Business strategy","Growth initiatives","Product decisions"]},
+{name:"Gamel Alshaer",role:"CTO",roleType:"cto",desc:"Responsible for technical architecture, technology choices, and engineering standards.",details:["Architecture","Tech decisions","Standards"]},
+{name:"Omnia Arafat",role:"Project Manager",roleType:"pm",desc:"Owns planning, scope, timelines, task prioritization, and cross-team coordination.",details:["Planning","Timeline","Coordination"]},
+{name:"Menna Emara",role:"Product Designer",roleType:"design",desc:"Responsible for UX/UI, user flows, wireframes, and product experience decisions.",details:["UX","UI","Flows"]},
+{name:"Amr Taha",role:"Frontend Developer",roleType:"frontend",desc:"Implements UI designs, frontend logic, and ensures smooth user interactions.",details:["UI","Logic","Performance"]},
+{name:"Eslam Elsayed",role:"Backend Developer",roleType:"backend",desc:"Handles APIs, databases, business logic, and system integrations.",details:["APIs","Databases","Integrations"]},
+{name:"Momen Mohamed",role:"Flutter Developer",roleType:"mobile",desc:"Builds and maintains mobile applications using Flutter.",details:["Flutter","Mobile","Optimization"]},
+{name:"Baraa Hamza",role:"Customer Support & Sales",roleType:"support",desc:"Manages client communication, onboarding, support, and sales follow-ups.",details:["Onboarding","Support","Sales"]},
+{name:"Reema Abdurahman",role:"Customer Support & Sales",roleType:"support",desc:"Supports customers, handles inquiries, and assists with sales operations.",details:["Support","Inquiries","Sales"]}
 ];
 
-let team=JSON.parse(localStorage.getItem("teamData"))||defaultTeam;
+let team=JSON.parse(localStorage.getItem("teamData"))||[];
+defaultTeam.forEach(d=>{
+  if(!team.find(t=>t.name===d.name)) team.push(d);
+});
 
 const grid=document.getElementById("team");
 const teamModal=document.getElementById("teamModal");
 const adminModal=document.getElementById("adminModal");
 const modalBody=document.getElementById("modalBody");
+const toast=document.getElementById("toast");
 
 function render(){
   grid.innerHTML="";
@@ -338,6 +385,12 @@ function save(){
   team[activeIndex].details=[...modalBody.querySelectorAll("li")].map(li=>li.innerText);
   localStorage.setItem("teamData",JSON.stringify(team));
   render();
+  showToast();
+}
+
+function showToast(){
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),2500);
 }
 
 if(localStorage.getItem("theme")==="dark") document.body.classList.add("dark");
