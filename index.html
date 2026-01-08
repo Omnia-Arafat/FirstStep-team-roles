@@ -2,256 +2,187 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>First Step – Space Team</title>
+<title>First Step – Team Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <style>
 :root {
-  --neon-blue: #4fc3f7;
-  --neon-purple: #b388ff;
-  --neon-pink: #ff79c6;
-  --card-bg: rgba(20, 25, 45, 0.85);
+  --bg: #0b1026;
+  --bg-soft: #14192d;
+  --text: #eaeaff;
+  --muted: #9aa4ff;
+  --card: rgba(20,25,45,.9);
+  --accent: #4fc3f7;
 }
 
-* { box-sizing: border-box; }
+body.light {
+  --bg: #f4f7fb;
+  --bg-soft: #ffffff;
+  --text: #222;
+  --muted: #555;
+  --card: #ffffff;
+  --accent: #3f51b5;
+}
+
+* { box-sizing:border-box; }
 
 body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  background: radial-gradient(circle at bottom, #0b1026, #02040f);
-  color: #eaeaff;
-  overflow-x: hidden;
-}
-
-/* 🌌 Stars background */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 20% 30%, white, transparent),
-    radial-gradient(1px 1px at 80% 70%, white, transparent),
-    radial-gradient(1px 1px at 50% 90%, white, transparent);
-  animation: stars 60s linear infinite;
-  opacity: .4;
-}
-
-@keyframes stars {
-  from { transform: translateY(0); }
-  to { transform: translateY(-2000px); }
+  margin:0;
+  font-family:'Segoe UI', Tahoma, sans-serif;
+  background: radial-gradient(circle at bottom, var(--bg-soft), var(--bg));
+  color: var(--text);
+  transition: background .4s, color .4s;
 }
 
 .container {
-  max-width: 1300px;
-  margin: auto;
-  padding: 70px 20px;
+  max-width:1300px;
+  margin:auto;
+  padding:60px 20px;
 }
 
 h1 {
-  text-align: center;
-  font-size: 46px;
-  margin-bottom: 10px;
-  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  text-align:center;
+  font-size:44px;
+  background: linear-gradient(90deg, var(--accent), #b388ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
 
 .subtitle {
-  text-align: center;
-  color: #9aa4ff;
-  margin-bottom: 60px;
-  font-size: 18px;
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:50px;
 }
 
 .section-title {
-  margin: 50px 0 25px;
-  font-size: 24px;
-  color: var(--neon-blue);
-  letter-spacing: 1px;
+  margin:50px 0 20px;
+  font-size:22px;
+  color:var(--accent);
+}
+
+.toggle {
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:var(--card);
+  border:none;
+  padding:10px 16px;
+  border-radius:20px;
+  color:var(--text);
+  cursor:pointer;
+  box-shadow:0 5px 20px rgba(0,0,0,.2);
 }
 
 .team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 30px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
+  gap:28px;
 }
 
-/* 🪐 Card */
 .card {
-  background: var(--card-bg);
-  border-radius: 22px;
-  padding: 28px;
-  position: relative;
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 0 0 transparent;
-  animation: float 6s ease-in-out infinite;
-  transition: transform .4s ease, box-shadow .4s ease;
+  background:var(--card);
+  border-radius:22px;
+  padding:26px;
+  box-shadow:0 12px 30px rgba(0,0,0,.15);
+  transition:.4s;
 }
 
-.card::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(120deg, transparent, var(--neon-blue), transparent);
-  opacity: 0;
-  transition: opacity .4s;
-}
-
-.card:hover::before { opacity: .6; }
 .card:hover {
-  transform: translateY(-14px) scale(1.02);
-  box-shadow: 0 0 30px rgba(79,195,247,.35);
-}
-
-@keyframes float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-.name {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 6px;
+  transform:translateY(-10px);
 }
 
 .role {
-  display: inline-block;
-  font-size: 13px;
-  padding: 6px 14px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.08);
-  margin-bottom: 16px;
-  letter-spacing: .5px;
+  display:inline-block;
+  font-size:13px;
+  padding:6px 14px;
+  border-radius:14px;
+  margin-bottom:12px;
+  background:rgba(0,0,0,.08);
 }
 
 .desc {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #cfd4ff;
-  margin-bottom: 18px;
-}
-
-/* 🎮 Gamification */
-.stats {
-  font-size: 13px;
-  color: #9aa4ff;
+  font-size:15px;
+  color:var(--muted);
+  margin-bottom:14px;
 }
 
 .bar {
-  height: 6px;
-  background: rgba(255,255,255,.1);
-  border-radius: 6px;
-  overflow: hidden;
-  margin-top: 6px;
+  height:6px;
+  background:rgba(0,0,0,.1);
+  border-radius:6px;
+  overflow:hidden;
 }
 
 .fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  height:100%;
+  background:linear-gradient(90deg, var(--accent), #b388ff);
 }
 
-/* Role colors */
-.owner { color: #ff6b6b; }
-.cto { color: #4fc3f7; }
-.pm { color: #7dffb3; }
-.design { color: #ff79c6; }
-.frontend { color: #6ee7ff; }
-.backend { color: #b388ff; }
-.mobile { color: #ffb86c; }
-.support { color: #a7ff83; }
+/* role colors */
+.owner{color:#ff6b6b}
+.cto{color:#4fc3f7}
+.pm{color:#7dffb3}
+.design{color:#ff79c6}
+.frontend{color:#6ee7ff}
+.backend{color:#b388ff}
+.mobile{color:#ffb86c}
+.support{color:#a7ff83}
 
-footer {
-  margin-top: 80px;
-  text-align: center;
-  font-size: 14px;
-  color: #7f88ff;
+footer{
+  margin-top:70px;
+  text-align:center;
+  color:var(--muted);
 }
 </style>
 </head>
 
 <body>
+<button class="toggle" onclick="toggleMode()">🌙 / ☀️</button>
+
 <div class="container">
-  <h1>First Step – Space Crew</h1>
-  <p class="subtitle">
-    Every role is a class. Every mission needs a crew.
-  </p>
+  <h1>First Step – Team Dashboard</h1>
+  <p class="subtitle">Editable · Gamified · Dark & Light</p>
 
-  <div class="section-title">🚀 Command & Leadership</div>
-  <div class="team-grid">
-    <div class="card">
-      <div class="name">Abeer Alhadi</div>
-      <div class="role owner">Founder · Vision Commander</div>
-      <div class="desc">Owns vision, strategy, partnerships, and final decisions.</div>
-      <div class="stats">Leadership Power
-        <div class="bar"><div class="fill" style="width:95%"></div></div>
-      </div>
-    </div>
+  <div class="section-title">🚀 Team Members</div>
+  <div class="team-grid" id="team"></div>
 
-    <div class="card">
-      <div class="name">Ghada Alsheikh</div>
-      <div class="role owner">Co-Founder · Growth Strategist</div>
-      <div class="desc">Drives growth, planning, and high-level product alignment.</div>
-      <div class="stats">Strategy Level
-        <div class="bar"><div class="fill" style="width:90%"></div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-title">🛠 Engineering & Product</div>
-  <div class="team-grid">
-    <div class="card">
-      <div class="name">Gamel Alshaer</div>
-      <div class="role cto">CTO · System Architect</div>
-      <div class="desc">Defines architecture, tech stack, and engineering standards.</div>
-      <div class="stats">Tech Mastery
-        <div class="bar"><div class="fill" style="width:92%"></div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="name">Omnia Arafat</div>
-      <div class="role pm">Project Manager · Mission Controller</div>
-      <div class="desc">Controls scope, timelines, priorities, and team sync.</div>
-      <div class="stats">Execution Control
-        <div class="bar"><div class="fill" style="width:94%"></div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="name">Menna Emara</div>
-      <div class="role design">Product Designer · UX Pilot</div>
-      <div class="desc">Designs user flows, interfaces, and experiences.</div>
-      <div class="stats">UX Precision
-        <div class="bar"><div class="fill" style="width:88%"></div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-title">🤝 Support & Sales</div>
-  <div class="team-grid">
-    <div class="card">
-      <div class="name">Baraa Hamza</div>
-      <div class="role support">Support · Client Navigator</div>
-      <div class="desc">Onboarding, support, and client relationships.</div>
-      <div class="stats">Customer Trust
-        <div class="bar"><div class="fill" style="width:89%"></div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="name">Reema Abdurahman</div>
-      <div class="role support">Support · Sales Operator</div>
-      <div class="desc">Handles inquiries and sales coordination.</div>
-      <div class="stats">Communication Skill
-        <div class="bar"><div class="fill" style="width:87%"></div></div>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    © First Step · Space Crew Dashboard
-  </footer>
+  <footer>© First Step</footer>
 </div>
+
+<script>
+/* 🔧 EDIT HERE */
+const teamData = [
+  {name:"Abeer Alhadi", role:"Founder", desc:"Vision & final decisions", power:95, class:"owner"},
+  {name:"Ghada Alsheikh", role:"Co-Founder", desc:"Strategy & growth", power:90, class:"owner"},
+  {name:"Gamel Alshaer", role:"CTO", desc:"Architecture & tech standards", power:92, class:"cto"},
+  {name:"Omnia Arafat", role:"Project Manager", desc:"Planning & execution", power:94, class:"pm"},
+  {name:"Menna Emara", role:"Product Designer", desc:"UX/UI & experience", power:88, class:"design"},
+  {name:"Amr Taha", role:"Frontend Developer", desc:"UI & interactions", power:85, class:"frontend"},
+  {name:"Eslam Elsayed", role:"Backend Developer", desc:"APIs & databases", power:87, class:"backend"},
+  {name:"Momen Mohamed", role:"Flutter Developer", desc:"Mobile applications", power:86, class:"mobile"},
+  {name:"Baraa Hamza", role:"Support & Sales", desc:"Clients & onboarding", power:89, class:"support"},
+  {name:"Reema Abdurahman", role:"Support & Sales", desc:"Customer success", power:87, class:"support"}
+];
+
+const grid = document.getElementById("team");
+teamData.forEach(m => {
+  grid.innerHTML += `
+    <div class="card">
+      <div class="name">${m.name}</div>
+      <div class="role ${m.class}">${m.role}</div>
+      <div class="desc">${m.desc}</div>
+      <div class="bar"><div class="fill" style="width:${m.power}%"></div></div>
+    </div>`;
+});
+
+/* 🌗 Dark / Light */
+function toggleMode(){
+  document.body.classList.toggle("light");
+  localStorage.setItem("mode", document.body.classList.contains("light") ? "light" : "dark");
+}
+if(localStorage.getItem("mode")==="light"){
+  document.body.classList.add("light");
+}
+</script>
 </body>
 </html>
