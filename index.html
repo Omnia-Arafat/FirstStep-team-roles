@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>First Step – Team Roles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #f4f7fb, #e9eef5);
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 60px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 42px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 50px;
+      font-size: 18px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+    }
+
+    .name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .role {
+      display: inline-block;
+      background: #eef2ff;
+      color: #3f51b5;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .desc {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #555;
+    }
+
+    .owner { background: #ffecec; color: #c62828; }
+    .cto { background: #e3f2fd; color: #1565c0; }
+    .pm { background: #e8f5e9; color: #2e7d32; }
+    .design { background: #f3e5f5; color: #6a1b9a; }
+    .frontend { background: #e1f5fe; color: #0277bd; }
+    .backend { background: #ede7f6; color: #4527a0; }
+    .mobile { background: #fff3e0; color: #ef6c00; }
+    .support { background: #f1f8e9; color: #558b2f; }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>First Step – Team Roles</h1>
+    <p class="subtitle">
+      Clear responsibilities ensure better decisions, accountability, and smooth collaboration.
+    </p>
+
+    <div class="team-grid">
+
+      <div class="card">
+        <div class="name">Abeer Alhadi</div>
+        <div class="role owner">Owner</div>
+        <div class="desc">
+          Final authority on vision, business direction, partnerships, and major strategic decisions.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="name">Ghada Alsheikh</div>
+        <div class="role owner">Co-Founder</div>
+        <div class="desc">
+          Supports strategic planning, business growth, and high-level product decisions.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="name">Gamel Alshaer</div>
+        <div class="role cto">CTO</div>
+        <div class="desc">
+          Responsible for technical architecture, technology choices, and engineering standards.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="name">Omnia Arafat</div>
+        <div class="role pm">Project Manager</div>
+        <div class="desc">
+          Owns planning, scope, timelines, task prioritization, and cross-team coordination.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="name">Menna Emara</div>
+        <div class="role design">Product Designer</div>
+        <div class="desc">
+          Responsible for UX/UI, user flows, wireframes, and product experience decisions.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="name">Amr Taha</div>
+        <div class="role frontend">Frontend Developer</div>
+        <div class="desc">
+          Implements UI designs, frontend logic, and ensures smooth user interactions.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="name">Eslam Elsayed</div>
+        <div class="role backend">Backend Developer</div>
+        <div class="desc">
+          Handles APIs, databases, business logic, and system integrations.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="name">Momen Mohamed</div>
+        <div class="role mobile">Flutter Developer</div>
+        <div class="desc">
+          Builds and maintains mobile applications using Flutter.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="name">Baraa Hamza</div>
+        <div class="role support">Customer Support & Sales</div>
+        <div class="desc">
+          Manages client communication, onboarding, support, and sales follow-ups.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="name">Reema Abdurahman</div>
+        <div class="role support">Customer Support & Sales</div>
+        <div class="desc">
+          Supports customers, handles inquiries, and assists with sales operations.
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      © First Step – Roles & Responsibilities Page
+    </footer>
+  </div>
+</body>
+</html>
