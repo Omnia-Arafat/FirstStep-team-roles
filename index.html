@@ -2,283 +2,292 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>First Step – Team (Admin Mode)</title>
+<title>First Step – Team</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <style>
 /* ================= BRAND COLORS ================= */
 :root {
-  --red: #B92C28;
-  --wine: #912744;
-  --green: #4BB484;
-  --blue: #212C6E;
+  --red:#B92C28;
+  --wine:#912744;
+  --green:#4BB484;
+  --blue:#212C6E;
 
-  --bg: #f5f6fa;
-  --card: #ffffff;
-  --text: #1f1f1f;
-  --muted: #555;
+  --bg:#f5f6fa;
+  --card:#ffffff;
+  --text:#1f1f1f;
+  --muted:#555;
+  --overlay:rgba(0,0,0,.35);
 }
 
 body.dark {
-  --bg: #121526;
-  --card: #1b1f3a;
-  --text: #f1f1f1;
-  --muted: #b5b5c5;
+  --bg:#121526;
+  --card:#1b1f3a;
+  --text:#f1f1f1;
+  --muted:#b5b5c5;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 
 body {
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  transition: .4s;
+  margin:0;
+  font-family:"Segoe UI",Tahoma,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.4s;
 }
 
+body.blurred > *:not(.dialog):not(.admin-hint) {
+  filter: blur(6px);
+  pointer-events:none;
+}
+
+/* ================= HEADER ================= */
 .container {
-  max-width: 1300px;
-  margin: auto;
-  padding: 50px 20px;
+  max-width:1300px;
+  margin:auto;
+  padding:50px 20px;
 }
 
 .logo {
-  display: block;
-  margin: 0 auto 20px;
-  width: 170px;
+  display:block;
+  margin:0 auto 20px;
+  width:170px;
 }
 
-h1 { text-align: center; color: var(--blue); }
+h1 { text-align:center; color:var(--blue); }
 
 .subtitle {
-  text-align: center;
-  color: var(--muted);
-  margin-bottom: 40px;
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:40px;
 }
 
-/* ================= CONTROLS ================= */
-.controls {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  display: flex;
-  gap: 10px;
+/* ================= ADMIN BUTTON ================= */
+.admin-wrapper {
+  position:fixed;
+  top:16px;
+  right:16px;
+  z-index:50;
 }
 
-button {
-  background: var(--card);
-  border: none;
-  padding: 10px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 14px;
-  box-shadow: 0 6px 18px rgba(0,0,0,.15);
+.admin-btn {
+  background:var(--card);
+  border:none;
+  padding:10px 18px;
+  border-radius:24px;
+  cursor:pointer;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
+}
+
+.admin-hint {
+  position:fixed;
+  inset:0;
+  background:var(--overlay);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:40;
+}
+
+.admin-hint div {
+  background:var(--card);
+  padding:26px 30px;
+  border-radius:16px;
+  max-width:360px;
+  text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+  color:var(--muted);
+}
+
+.admin-wrapper:hover + .admin-hint {
+  display:flex;
 }
 
 /* ================= GRID ================= */
 .team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-  gap: 26px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:26px;
 }
 
 /* ================= CARD ================= */
 .card {
-  background: var(--card);
-  border-radius: 18px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.12);
-  transition: .35s;
-  cursor: pointer;
+  background:var(--card);
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+  position:relative;
+  overflow:hidden;
 }
 
-.card:hover { transform: translateY(-8px); }
-
-.card.active { box-shadow: 0 18px 45px rgba(33,44,110,.3); }
-
-/* ADMIN EDIT STATE */
-.admin .card {
-  cursor: text;
-  outline: 2px dashed var(--green);
+.card::after {
+  content:"View details";
+  position:absolute;
+  inset:0;
+  background:rgba(33,44,110,.75);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transition:.3s;
 }
 
-.name {
-  font-size: 20px;
-  font-weight: 700;
+.card:hover::after {
+  opacity:1;
+  cursor:pointer;
 }
 
+.name { font-size:20px; font-weight:700; }
 .role {
-  display: inline-block;
-  background: var(--blue);
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 14px;
-  font-size: 13px;
-  margin: 10px 0;
+  background:var(--blue);
+  color:#fff;
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:14px;
+  font-size:13px;
+  margin:10px 0;
+}
+.desc { color:var(--muted); font-size:14px; }
+
+/* ================= DIALOG ================= */
+.dialog {
+  position:fixed;
+  top:0;
+  left:0;
+  height:100%;
+  width:420px;
+  background:var(--card);
+  box-shadow:20px 0 50px rgba(0,0,0,.35);
+  transform:translateX(-100%);
+  transition:.45s ease;
+  z-index:100;
+  padding:30px;
 }
 
-.desc {
-  font-size: 14px;
-  color: var(--muted);
+.dialog.open {
+  transform:translateX(0);
 }
 
-/* ================= DETAILS ================= */
-.details {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height .4s ease;
+.dialog h2 { margin-top:0; color:var(--blue); }
+
+.dialog ul {
+  padding-left:18px;
 }
 
-.card.active .details {
-  max-height: 500px;
-  margin-top: 16px;
+.dialog li {
+  margin-bottom:10px;
+  color:var(--muted);
 }
 
-.details ul {
-  padding-left: 18px;
+.close {
+  position:absolute;
+  top:18px;
+  right:18px;
+  background:none;
+  border:none;
+  font-size:18px;
+  cursor:pointer;
 }
 
-.details li {
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: var(--muted);
-}
-
-/* ================= POWER ================= */
-.bar {
-  height: 6px;
-  background: rgba(0,0,0,.1);
-  border-radius: 6px;
-  margin-top: 14px;
-}
-
-.fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--red), var(--wine));
-}
-
-footer {
-  margin-top: 70px;
-  text-align: center;
-  color: var(--muted);
+/* ================= ADMIN EDIT ================= */
+.admin .dialog [contenteditable] {
+  outline:2px dashed var(--green);
+  padding:2px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="controls">
-  <button onclick="toggleMode()">☀️ / 🌙</button>
-  <button onclick="toggleAdmin()">🔒 Admin</button>
+<div class="admin-wrapper">
+  <button class="admin-btn" onclick="enterAdmin()">Admin</button>
+</div>
+<div class="admin-hint">
+  <div>
+    Enter admin mode to edit and manage team roles and responsibilities.
+  </div>
 </div>
 
 <div class="container">
   <img src="https://firststep-app.com/assets/logos/complete_logo.svg" class="logo">
   <h1>First Step Team</h1>
-  <p class="subtitle">Admin-only editable roles & responsibilities</p>
+  <p class="subtitle">Click a card to view detailed responsibilities</p>
 
   <div class="team-grid" id="team"></div>
+</div>
 
-  <footer>© First Step</footer>
+<div class="dialog" id="dialog">
+  <button class="close" onclick="closeDialog()">✕</button>
+  <div id="dialogContent"></div>
 </div>
 
 <script>
-/* ================= PASSWORD ================= */
-const ADMIN_PASSWORD = "firststep-admin"; // change this
-
+const ADMIN_PASSWORD = "firststep-admin";
 let isAdmin = false;
 
-/* ================= DATA ================= */
-const defaultTeam = [
+const team = JSON.parse(localStorage.getItem("teamData")) || [
   {
-    name: "Abeer Alhadi",
-    role: "Founder",
-    desc: "Vision owner & final decision maker",
-    power: 95,
-    details: [
-      "Defines company vision and strategy",
-      "Approves major business decisions",
-      "Leads partnerships and growth"
-    ]
-  },
-  {
-    name: "Gamel Alshaer",
-    role: "CTO",
-    desc: "Technical architecture leader",
-    power: 92,
-    details: [
-      "Defines system architecture",
-      "Ensures scalability and security",
-      "Leads engineering standards"
+    name:"Omnia Arafat",
+    role:"Project Manager",
+    desc:"Delivery & execution owner",
+    details:[
+      "Plans timelines and milestones",
+      "Manages scope and risks",
+      "Coordinates cross teams"
     ]
   }
 ];
 
-/* Load saved */
-let team = JSON.parse(localStorage.getItem("teamData")) || defaultTeam;
+const grid = document.getElementById("team");
+const dialog = document.getElementById("dialog");
+const content = document.getElementById("dialogContent");
 
-/* ================= RENDER ================= */
 function render() {
-  const grid = document.getElementById("team");
-  grid.innerHTML = "";
-
-  team.forEach((m, i) => {
-    grid.innerHTML += `
-      <div class="card" onclick="toggleCard(${i})">
-        <div class="name" contenteditable="${isAdmin}">${m.name}</div>
-        <div class="role" contenteditable="${isAdmin}">${m.role}</div>
-        <div class="desc" contenteditable="${isAdmin}">${m.desc}</div>
-
-        <div class="details">
-          <ul>
-            ${m.details.map(d => `<li contenteditable="${isAdmin}">${d}</li>`).join("")}
-          </ul>
-        </div>
-
-        <div class="bar"><div class="fill" style="width:${m.power}%"></div></div>
-      </div>
-    `;
+  grid.innerHTML="";
+  team.forEach((m,i)=>{
+    grid.innerHTML+=`
+      <div class="card" onclick="openDialog(${i})">
+        <div class="name">${m.name}</div>
+        <div class="role">${m.role}</div>
+        <div class="desc">${m.desc}</div>
+      </div>`;
   });
 }
 
-/* ================= INTERACTION ================= */
-function toggleCard(i) {
-  if (isAdmin) return;
-  document.querySelectorAll(".card").forEach((c, idx) => {
-    c.classList.toggle("active", idx === i);
-  });
+function openDialog(i){
+  document.body.classList.add("blurred");
+  dialog.classList.add("open");
+
+  content.innerHTML=`
+    <h2 contenteditable="${isAdmin}">${team[i].name}</h2>
+    <p contenteditable="${isAdmin}">${team[i].role}</p>
+    <p contenteditable="${isAdmin}">${team[i].desc}</p>
+    <ul>
+      ${team[i].details.map(d=>`<li contenteditable="${isAdmin}">${d}</li>`).join("")}
+    </ul>`;
 }
 
-function toggleMode() {
-  document.body.classList.toggle("dark");
+function closeDialog(){
+  document.body.classList.remove("blurred");
+  dialog.classList.remove("open");
+  save();
 }
 
-function toggleAdmin() {
-  if (!isAdmin) {
-    const pass = prompt("Enter admin password:");
-    if (pass !== ADMIN_PASSWORD) return alert("Access denied");
+function enterAdmin(){
+  if(!isAdmin){
+    const pass = prompt("Enter admin password");
+    if(pass!==ADMIN_PASSWORD) return;
   }
-
   isAdmin = !isAdmin;
   document.body.classList.toggle("admin", isAdmin);
-
-  if (!isAdmin) saveData();
-  render();
 }
 
-/* ================= SAVE ================= */
-function saveData() {
-  const cards = document.querySelectorAll(".card");
-  cards.forEach((c, i) => {
-    team[i].name = c.querySelector(".name").innerText;
-    team[i].role = c.querySelector(".role").innerText;
-    team[i].desc = c.querySelector(".desc").innerText;
-    team[i].details = [...c.querySelectorAll("li")].map(li => li.innerText);
-  });
+function save(){
   localStorage.setItem("teamData", JSON.stringify(team));
 }
 
-/* ================= INIT ================= */
 render();
 </script>
 
