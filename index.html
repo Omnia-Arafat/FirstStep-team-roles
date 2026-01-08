@@ -6,8 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <style>
-/* ================= BRAND COLORS ================= */
-:root {
+:root{
   --red:#B92C28;
   --wine:#912744;
   --green:#4BB484;
@@ -17,19 +16,19 @@
   --card:#ffffff;
   --text:#1f1f1f;
   --muted:#555;
-  --overlay:rgba(0,0,0,.35);
+  --overlay:rgba(0,0,0,.4);
 }
 
-body.dark {
+body.dark{
   --bg:#121526;
   --card:#1b1f3a;
   --text:#f1f1f1;
   --muted:#b5b5c5;
 }
 
-* { box-sizing:border-box; }
+*{box-sizing:border-box}
 
-body {
+body{
   margin:0;
   font-family:"Segoe UI",Tahoma,sans-serif;
   background:var(--bg);
@@ -37,91 +36,70 @@ body {
   transition:.4s;
 }
 
-body.blurred > *:not(.dialog):not(.admin-hint) {
-  filter: blur(6px);
+body.modal-open > *:not(.modal){
+  filter:blur(6px);
   pointer-events:none;
 }
 
-/* ================= HEADER ================= */
-.container {
+/* HEADER */
+.container{
   max-width:1300px;
   margin:auto;
   padding:50px 20px;
 }
 
-.logo {
+.logo{
   display:block;
   margin:0 auto 20px;
   width:170px;
 }
 
-h1 { text-align:center; color:var(--blue); }
+h1{text-align:center;color:var(--blue)}
+.subtitle{text-align:center;color:var(--muted);margin-bottom:40px}
 
-.subtitle {
-  text-align:center;
-  color:var(--muted);
-  margin-bottom:40px;
-}
-
-/* ================= ADMIN BUTTON ================= */
-.admin-wrapper {
+/* CONTROLS */
+.controls{
   position:fixed;
   top:16px;
   right:16px;
-  z-index:50;
+  display:flex;
+  gap:10px;
+  z-index:20;
 }
 
-.admin-btn {
+button{
   background:var(--card);
   border:none;
   padding:10px 18px;
-  border-radius:24px;
+  border-radius:22px;
   cursor:pointer;
   box-shadow:0 6px 18px rgba(0,0,0,.15);
+  transition:.3s;
 }
 
-.admin-hint {
-  position:fixed;
-  inset:0;
-  background:var(--overlay);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:40;
-}
+/* ADMIN HOVER TEXT */
+.admin-btn span.alt{display:none}
+.admin-btn:hover span.main{display:none}
+.admin-btn:hover span.alt{display:inline}
 
-.admin-hint div {
-  background:var(--card);
-  padding:26px 30px;
-  border-radius:16px;
-  max-width:360px;
-  text-align:center;
-  box-shadow:0 20px 50px rgba(0,0,0,.25);
-  color:var(--muted);
-}
-
-.admin-wrapper:hover + .admin-hint {
-  display:flex;
-}
-
-/* ================= GRID ================= */
-.team-grid {
+/* GRID */
+.team-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:26px;
 }
 
-/* ================= CARD ================= */
-.card {
+/* CARD */
+.card{
   background:var(--card);
   border-radius:18px;
   padding:24px;
-  box-shadow:0 10px 30px rgba(0,0,0,.12);
   position:relative;
-  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+  cursor:pointer;
 }
 
-.card::after {
+.card::after{
   content:"View details";
   position:absolute;
   inset:0;
@@ -134,65 +112,67 @@ h1 { text-align:center; color:var(--blue); }
   transition:.3s;
 }
 
-.card:hover::after {
-  opacity:1;
-  cursor:pointer;
-}
+.card:hover::after{opacity:1}
 
-.name { font-size:20px; font-weight:700; }
-.role {
+.name{font-size:20px;font-weight:700}
+.role{
+  display:inline-block;
   background:var(--blue);
   color:#fff;
-  display:inline-block;
   padding:6px 14px;
   border-radius:14px;
   font-size:13px;
   margin:10px 0;
 }
-.desc { color:var(--muted); font-size:14px; }
+.desc{font-size:14px;color:var(--muted)}
 
-/* ================= DIALOG ================= */
-.dialog {
+/* MODAL */
+.modal{
   position:fixed;
-  top:0;
-  left:0;
-  height:100%;
-  width:420px;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--overlay);
+  opacity:0;
+  pointer-events:none;
+  transition:.4s;
+  z-index:50;
+}
+
+.modal.open{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.modal-content{
   background:var(--card);
-  box-shadow:20px 0 50px rgba(0,0,0,.35);
-  transform:translateX(-100%);
-  transition:.45s ease;
-  z-index:100;
-  padding:30px;
+  width:420px;
+  max-width:90%;
+  border-radius:18px;
+  padding:28px;
+  transform:translateX(-40px);
+  opacity:0;
+  transition:.4s ease;
 }
 
-.dialog.open {
+.modal.open .modal-content{
   transform:translateX(0);
+  opacity:1;
 }
 
-.dialog h2 { margin-top:0; color:var(--blue); }
-
-.dialog ul {
-  padding-left:18px;
-}
-
-.dialog li {
-  margin-bottom:10px;
-  color:var(--muted);
-}
-
-.close {
+.close{
   position:absolute;
   top:18px;
   right:18px;
-  background:none;
   border:none;
-  font-size:18px;
+  background:none;
   cursor:pointer;
+  font-size:18px;
 }
 
-/* ================= ADMIN EDIT ================= */
-.admin .dialog [contenteditable] {
+/* ADMIN EDIT */
+.admin [contenteditable]{
   outline:2px dashed var(--green);
   padding:2px;
 }
@@ -201,54 +181,56 @@ h1 { text-align:center; color:var(--blue); }
 
 <body>
 
-<div class="admin-wrapper">
-  <button class="admin-btn" onclick="enterAdmin()">Admin</button>
-</div>
-<div class="admin-hint">
-  <div>
-    Enter admin mode to edit and manage team roles and responsibilities.
-  </div>
+<div class="controls">
+  <button onclick="toggleTheme()">Light / Dark</button>
+  <button class="admin-btn" onclick="toggleAdmin()">
+    <span class="main">Admin</span>
+    <span class="alt">Enter admin to edit & manage</span>
+  </button>
 </div>
 
 <div class="container">
   <img src="https://firststep-app.com/assets/logos/complete_logo.svg" class="logo">
   <h1>First Step Team</h1>
-  <p class="subtitle">Click a card to view detailed responsibilities</p>
-
+  <p class="subtitle">Click any card to view full responsibilities</p>
   <div class="team-grid" id="team"></div>
 </div>
 
-<div class="dialog" id="dialog">
-  <button class="close" onclick="closeDialog()">✕</button>
-  <div id="dialogContent"></div>
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <button class="close" onclick="closeModal()">✕</button>
+    <div id="modalBody"></div>
+  </div>
 </div>
 
 <script>
-const ADMIN_PASSWORD = "firststep-admin";
-let isAdmin = false;
+const ADMIN_PASSWORD="firststep-admin";
+let isAdmin=false;
 
-const team = JSON.parse(localStorage.getItem("teamData")) || [
-  {
-    name:"Omnia Arafat",
-    role:"Project Manager",
-    desc:"Delivery & execution owner",
-    details:[
-      "Plans timelines and milestones",
-      "Manages scope and risks",
-      "Coordinates cross teams"
-    ]
-  }
+const defaultTeam=[
+{name:"Abeer Alhadi",role:"Founder",desc:"Vision & final decisions",details:["Defines vision","Approves strategy","Leads partnerships"]},
+{name:"Ghada Alsheikh",role:"Co-Founder",desc:"Growth & strategy",details:["Business growth","Roadmap alignment","Stakeholder coordination"]},
+{name:"Gamel Alshaer",role:"CTO",desc:"Technical leadership",details:["Architecture","Scalability","Engineering standards"]},
+{name:"Omnia Arafat",role:"Project Manager",desc:"Delivery & execution",details:["Planning","Risk management","Cross-team coordination"]},
+{name:"Menna Emara",role:"Product Designer",desc:"UX/UI",details:["User flows","Wireframes","Design systems"]},
+{name:"Amr Taha",role:"Frontend Developer",desc:"UI implementation",details:["Responsive UI","Performance","Design collaboration"]},
+{name:"Eslam Elsayed",role:"Backend Developer",desc:"APIs & databases",details:["APIs","Security","Integrations"]},
+{name:"Momen Mohamed",role:"Flutter Developer",desc:"Mobile apps",details:["Flutter apps","Cross-platform","Optimization"]},
+{name:"Baraa Hamza",role:"Support & Sales",desc:"Client relations",details:["Onboarding","Support","Sales follow-ups"]},
+{name:"Reema Abdurahman",role:"Support & Sales",desc:"Customer success",details:["Client inquiries","Retention","Sales support"]}
 ];
 
-const grid = document.getElementById("team");
-const dialog = document.getElementById("dialog");
-const content = document.getElementById("dialogContent");
+let team=JSON.parse(localStorage.getItem("teamData"))||defaultTeam;
 
-function render() {
+const grid=document.getElementById("team");
+const modal=document.getElementById("modal");
+const body=document.getElementById("modalBody");
+
+function render(){
   grid.innerHTML="";
   team.forEach((m,i)=>{
     grid.innerHTML+=`
-      <div class="card" onclick="openDialog(${i})">
+      <div class="card" onclick="openModal(${i})">
         <div class="name">${m.name}</div>
         <div class="role">${m.role}</div>
         <div class="desc">${m.desc}</div>
@@ -256,37 +238,50 @@ function render() {
   });
 }
 
-function openDialog(i){
-  document.body.classList.add("blurred");
-  dialog.classList.add("open");
-
-  content.innerHTML=`
+function openModal(i){
+  document.body.classList.add("modal-open");
+  modal.classList.add("open");
+  body.innerHTML=`
     <h2 contenteditable="${isAdmin}">${team[i].name}</h2>
     <p contenteditable="${isAdmin}">${team[i].role}</p>
     <p contenteditable="${isAdmin}">${team[i].desc}</p>
-    <ul>
-      ${team[i].details.map(d=>`<li contenteditable="${isAdmin}">${d}</li>`).join("")}
-    </ul>`;
+    <ul>${team[i].details.map(d=>`<li contenteditable="${isAdmin}">${d}</li>`).join("")}</ul>`;
 }
 
-function closeDialog(){
-  document.body.classList.remove("blurred");
-  dialog.classList.remove("open");
+function closeModal(){
   save();
+  modal.classList.remove("open");
+  document.body.classList.remove("modal-open");
 }
 
-function enterAdmin(){
+function toggleAdmin(){
   if(!isAdmin){
-    const pass = prompt("Enter admin password");
-    if(pass!==ADMIN_PASSWORD) return;
+    const p=prompt("Enter admin password");
+    if(p!==ADMIN_PASSWORD) return;
   }
-  isAdmin = !isAdmin;
-  document.body.classList.toggle("admin", isAdmin);
+  isAdmin=!isAdmin;
+  document.body.classList.toggle("admin",isAdmin);
+}
+
+function toggleTheme(){
+  document.body.classList.toggle("dark");
+  localStorage.setItem("theme",document.body.classList.contains("dark")?"dark":"light");
 }
 
 function save(){
-  localStorage.setItem("teamData", JSON.stringify(team));
+  const h=body.querySelectorAll("*");
+  team.forEach((m,i)=>{
+    if(i===0){
+      m.name=h[0].innerText;
+      m.role=h[1].innerText;
+      m.desc=h[2].innerText;
+      m.details=[...body.querySelectorAll("li")].map(li=>li.innerText);
+    }
+  });
+  localStorage.setItem("teamData",JSON.stringify(team));
 }
+
+if(localStorage.getItem("theme")==="dark")document.body.classList.add("dark");
 
 render();
 </script>
