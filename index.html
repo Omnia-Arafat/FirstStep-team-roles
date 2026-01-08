@@ -16,7 +16,7 @@
   --card:#ffffff;
   --text:#1f1f1f;
   --muted:#555;
-  --overlay:rgba(0,0,0,.4);
+  --overlay:rgba(0,0,0,.45);
 }
 
 body.dark{
@@ -103,6 +103,7 @@ button{
   content:"View details";
   position:absolute;
   inset:0;
+  border-radius:18px;
   background:rgba(33,44,110,.75);
   color:#fff;
   display:flex;
@@ -126,7 +127,7 @@ button{
 }
 .desc{font-size:14px;color:var(--muted)}
 
-/* MODAL */
+/* MODALS */
 .modal{
   position:fixed;
   inset:0;
@@ -148,12 +149,13 @@ button{
 .modal-content{
   background:var(--card);
   width:420px;
-  max-width:90%;
+  max-width:92%;
   border-radius:18px;
   padding:28px;
   transform:translateX(-40px);
   opacity:0;
   transition:.4s ease;
+  position:relative;
 }
 
 .modal.open .modal-content{
@@ -165,10 +167,10 @@ button{
   position:absolute;
   top:18px;
   right:18px;
-  border:none;
   background:none;
-  cursor:pointer;
+  border:none;
   font-size:18px;
+  cursor:pointer;
 }
 
 /* ADMIN EDIT */
@@ -196,10 +198,26 @@ button{
   <div class="team-grid" id="team"></div>
 </div>
 
-<div class="modal" id="modal">
+<!-- TEAM MODAL -->
+<div class="modal" id="teamModal">
   <div class="modal-content">
-    <button class="close" onclick="closeModal()">✕</button>
+    <button class="close" onclick="closeTeam()">✕</button>
     <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div class="modal" id="adminModal">
+  <div class="modal-content">
+    <button class="close" onclick="closeAdmin()">✕</button>
+    <h2>Admin Access</h2>
+    <p>Enter admin password to edit and manage team roles.</p>
+    <input id="adminPass" type="password"
+      style="width:100%;padding:12px;border-radius:12px;border:1px solid #ccc;margin-top:12px">
+    <button onclick="confirmAdmin()"
+      style="margin-top:18px;width:100%;padding:12px;border-radius:16px;background:var(--blue);color:#fff;border:none">
+      Enter Admin Mode
+    </button>
   </div>
 </div>
 
@@ -208,29 +226,30 @@ const ADMIN_PASSWORD="firststep-admin";
 let isAdmin=false;
 
 const defaultTeam=[
-{name:"Abeer Alhadi",role:"Founder",desc:"Vision & final decisions",details:["Defines vision","Approves strategy","Leads partnerships"]},
-{name:"Ghada Alsheikh",role:"Co-Founder",desc:"Growth & strategy",details:["Business growth","Roadmap alignment","Stakeholder coordination"]},
-{name:"Gamel Alshaer",role:"CTO",desc:"Technical leadership",details:["Architecture","Scalability","Engineering standards"]},
-{name:"Omnia Arafat",role:"Project Manager",desc:"Delivery & execution",details:["Planning","Risk management","Cross-team coordination"]},
-{name:"Menna Emara",role:"Product Designer",desc:"UX/UI",details:["User flows","Wireframes","Design systems"]},
-{name:"Amr Taha",role:"Frontend Developer",desc:"UI implementation",details:["Responsive UI","Performance","Design collaboration"]},
-{name:"Eslam Elsayed",role:"Backend Developer",desc:"APIs & databases",details:["APIs","Security","Integrations"]},
-{name:"Momen Mohamed",role:"Flutter Developer",desc:"Mobile apps",details:["Flutter apps","Cross-platform","Optimization"]},
-{name:"Baraa Hamza",role:"Support & Sales",desc:"Client relations",details:["Onboarding","Support","Sales follow-ups"]},
-{name:"Reema Abdurahman",role:"Support & Sales",desc:"Customer success",details:["Client inquiries","Retention","Sales support"]}
+{name:"Abeer Alhadi",role:"Founder",desc:"Vision and final decisions",details:["Defines company vision","Approves strategic direction","Key partnerships"]},
+{name:"Ghada Alsheikh",role:"Co-Founder",desc:"Business growth and planning",details:["Business strategy","Growth initiatives","Stakeholder alignment"]},
+{name:"Gamel Alshaer",role:"CTO",desc:"Technical leadership",details:["System architecture","Technology decisions","Engineering standards"]},
+{name:"Omnia Arafat",role:"Project Manager",desc:"Planning and execution",details:["Project planning","Timeline control","Cross-team coordination"]},
+{name:"Menna Emara",role:"Product Designer",desc:"UX/UI ownership",details:["User research","Wireframes","Design systems"]},
+{name:"Amr Taha",role:"Frontend Developer",desc:"Frontend development",details:["UI implementation","Performance optimization","Design collaboration"]},
+{name:"Eslam Elsayed",role:"Backend Developer",desc:"Backend systems",details:["APIs","Database design","Integrations"]},
+{name:"Momen Mohamed",role:"Flutter Developer",desc:"Mobile applications",details:["Flutter apps","Cross-platform support","Performance tuning"]},
+{name:"Baraa Hamza",role:"Customer Support & Sales",desc:"Client relations",details:["Client onboarding","Support","Sales follow-up"]},
+{name:"Reema Abdurahman",role:"Customer Support & Sales",desc:"Customer success",details:["Customer inquiries","Retention","Sales assistance"]}
 ];
 
 let team=JSON.parse(localStorage.getItem("teamData"))||defaultTeam;
 
 const grid=document.getElementById("team");
-const modal=document.getElementById("modal");
-const body=document.getElementById("modalBody");
+const teamModal=document.getElementById("teamModal");
+const adminModal=document.getElementById("adminModal");
+const modalBody=document.getElementById("modalBody");
 
 function render(){
   grid.innerHTML="";
   team.forEach((m,i)=>{
     grid.innerHTML+=`
-      <div class="card" onclick="openModal(${i})">
+      <div class="card" onclick="openTeam(${i})">
         <div class="name">${m.name}</div>
         <div class="role">${m.role}</div>
         <div class="desc">${m.desc}</div>
@@ -238,29 +257,47 @@ function render(){
   });
 }
 
-function openModal(i){
+let activeIndex=null;
+
+function openTeam(i){
+  activeIndex=i;
   document.body.classList.add("modal-open");
-  modal.classList.add("open");
-  body.innerHTML=`
+  teamModal.classList.add("open");
+  modalBody.innerHTML=`
     <h2 contenteditable="${isAdmin}">${team[i].name}</h2>
     <p contenteditable="${isAdmin}">${team[i].role}</p>
     <p contenteditable="${isAdmin}">${team[i].desc}</p>
-    <ul>${team[i].details.map(d=>`<li contenteditable="${isAdmin}">${d}</li>`).join("")}</ul>`;
+    <ul>
+      ${team[i].details.map(d=>`<li contenteditable="${isAdmin}">${d}</li>`).join("")}
+    </ul>`;
 }
 
-function closeModal(){
+function closeTeam(){
   save();
-  modal.classList.remove("open");
+  teamModal.classList.remove("open");
   document.body.classList.remove("modal-open");
 }
 
 function toggleAdmin(){
-  if(!isAdmin){
-    const p=prompt("Enter admin password");
-    if(p!==ADMIN_PASSWORD) return;
+  if(isAdmin){
+    isAdmin=false;
+    document.body.classList.remove("admin");
+    return;
   }
-  isAdmin=!isAdmin;
-  document.body.classList.toggle("admin",isAdmin);
+  document.body.classList.add("modal-open");
+  adminModal.classList.add("open");
+}
+
+function closeAdmin(){
+  adminModal.classList.remove("open");
+  document.body.classList.remove("modal-open");
+}
+
+function confirmAdmin(){
+  if(document.getElementById("adminPass").value!==ADMIN_PASSWORD) return;
+  isAdmin=true;
+  document.body.classList.add("admin");
+  closeAdmin();
 }
 
 function toggleTheme(){
@@ -269,20 +306,16 @@ function toggleTheme(){
 }
 
 function save(){
-  const h=body.querySelectorAll("*");
-  team.forEach((m,i)=>{
-    if(i===0){
-      m.name=h[0].innerText;
-      m.role=h[1].innerText;
-      m.desc=h[2].innerText;
-      m.details=[...body.querySelectorAll("li")].map(li=>li.innerText);
-    }
-  });
+  if(activeIndex===null) return;
+  const els=modalBody.querySelectorAll("*");
+  team[activeIndex].name=els[0].innerText;
+  team[activeIndex].role=els[1].innerText;
+  team[activeIndex].desc=els[2].innerText;
+  team[activeIndex].details=[...modalBody.querySelectorAll("li")].map(li=>li.innerText);
   localStorage.setItem("teamData",JSON.stringify(team));
 }
 
-if(localStorage.getItem("theme")==="dark")document.body.classList.add("dark");
-
+if(localStorage.getItem("theme")==="dark") document.body.classList.add("dark");
 render();
 </script>
 
