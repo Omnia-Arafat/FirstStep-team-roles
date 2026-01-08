@@ -17,6 +17,7 @@
   --text:#1f1f1f;
   --muted:#555;
   --overlay:rgba(0,0,0,.45);
+  --edit-bg:#f1f4ff;
 }
 
 body.dark{
@@ -24,6 +25,7 @@ body.dark{
   --card:#1b1f3a;
   --text:#f1f1f1;
   --muted:#b5b5c5;
+  --edit-bg:#242863;
 }
 
 *{box-sizing:border-box}
@@ -40,22 +42,6 @@ body.modal-open > *:not(.modal){
   filter:blur(6px);
   pointer-events:none;
 }
-
-/* HEADER */
-.container{
-  max-width:1300px;
-  margin:auto;
-  padding:50px 20px;
-}
-
-.logo{
-  display:block;
-  margin:0 auto 20px;
-  width:170px;
-}
-
-h1{text-align:center;color:var(--blue)}
-.subtitle{text-align:center;color:var(--muted);margin-bottom:40px}
 
 /* CONTROLS */
 .controls{
@@ -77,10 +63,26 @@ button{
   transition:.3s;
 }
 
-/* ADMIN HOVER TEXT */
+/* ADMIN HOVER */
 .admin-btn span.alt{display:none}
 .admin-btn:hover span.main{display:none}
 .admin-btn:hover span.alt{display:inline}
+
+/* LAYOUT */
+.container{
+  max-width:1300px;
+  margin:auto;
+  padding:50px 20px;
+}
+
+.logo{
+  display:block;
+  margin:0 auto 20px;
+  width:170px;
+}
+
+h1{text-align:center;color:var(--blue)}
+.subtitle{text-align:center;color:var(--muted);margin-bottom:40px}
 
 /* GRID */
 .team-grid{
@@ -112,19 +114,28 @@ button{
   opacity:0;
   transition:.3s;
 }
-
 .card:hover::after{opacity:1}
 
 .name{font-size:20px;font-weight:700}
+
+/* ROLE COLORS */
 .role{
   display:inline-block;
-  background:var(--blue);
-  color:#fff;
   padding:6px 14px;
   border-radius:14px;
   font-size:13px;
   margin:10px 0;
+  color:#fff;
 }
+.owner{background:var(--red)}
+.cto{background:var(--blue)}
+.pm{background:var(--green)}
+.design{background:#6a1b9a}
+.frontend{background:#0277bd}
+.backend{background:#4527a0}
+.mobile{background:#ef6c00}
+.support{background:#558b2f}
+
 .desc{font-size:14px;color:var(--muted)}
 
 /* MODALS */
@@ -140,15 +151,13 @@ button{
   transition:.4s;
   z-index:50;
 }
-
 .modal.open{
   opacity:1;
   pointer-events:auto;
 }
-
 .modal-content{
   background:var(--card);
-  width:420px;
+  width:440px;
   max-width:92%;
   border-radius:18px;
   padding:28px;
@@ -157,12 +166,10 @@ button{
   transition:.4s ease;
   position:relative;
 }
-
 .modal.open .modal-content{
   transform:translateX(0);
   opacity:1;
 }
-
 .close{
   position:absolute;
   top:18px;
@@ -173,11 +180,30 @@ button{
   cursor:pointer;
 }
 
-/* ADMIN EDIT */
+/* EDIT MODE */
 .admin [contenteditable]{
-  outline:2px dashed var(--green);
-  padding:2px;
+  background:var(--edit-bg);
+  border-radius:10px;
+  padding:8px 10px;
+  margin:6px 0;
 }
+.admin [contenteditable]:focus{
+  outline:none;
+  box-shadow:0 0 0 2px var(--green);
+}
+
+.save-btn{
+  display:none;
+  margin-top:18px;
+  width:100%;
+  padding:12px;
+  border-radius:16px;
+  background:var(--green);
+  color:#fff;
+  border:none;
+  cursor:pointer;
+}
+.admin .save-btn{display:block}
 </style>
 </head>
 
@@ -203,6 +229,7 @@ button{
   <div class="modal-content">
     <button class="close" onclick="closeTeam()">✕</button>
     <div id="modalBody"></div>
+    <button class="save-btn" onclick="save()">Save Changes</button>
   </div>
 </div>
 
@@ -224,18 +251,19 @@ button{
 <script>
 const ADMIN_PASSWORD="firststep-admin";
 let isAdmin=false;
+let activeIndex=null;
 
 const defaultTeam=[
-{name:"Abeer Alhadi",role:"Founder",desc:"Vision and final decisions",details:["Defines company vision","Approves strategic direction","Key partnerships"]},
-{name:"Ghada Alsheikh",role:"Co-Founder",desc:"Business growth and planning",details:["Business strategy","Growth initiatives","Stakeholder alignment"]},
-{name:"Gamel Alshaer",role:"CTO",desc:"Technical leadership",details:["System architecture","Technology decisions","Engineering standards"]},
-{name:"Omnia Arafat",role:"Project Manager",desc:"Planning and execution",details:["Project planning","Timeline control","Cross-team coordination"]},
-{name:"Menna Emara",role:"Product Designer",desc:"UX/UI ownership",details:["User research","Wireframes","Design systems"]},
-{name:"Amr Taha",role:"Frontend Developer",desc:"Frontend development",details:["UI implementation","Performance optimization","Design collaboration"]},
-{name:"Eslam Elsayed",role:"Backend Developer",desc:"Backend systems",details:["APIs","Database design","Integrations"]},
-{name:"Momen Mohamed",role:"Flutter Developer",desc:"Mobile applications",details:["Flutter apps","Cross-platform support","Performance tuning"]},
-{name:"Baraa Hamza",role:"Customer Support & Sales",desc:"Client relations",details:["Client onboarding","Support","Sales follow-up"]},
-{name:"Reema Abdurahman",role:"Customer Support & Sales",desc:"Customer success",details:["Customer inquiries","Retention","Sales assistance"]}
+ {name:"Abeer Alhadi",role:"Owner",roleType:"owner",desc:"Final authority on vision, business direction, partnerships, and major strategic decisions.",details:["Defines vision","Approves strategy","Key partnerships"]},
+ {name:"Ghada Alsheikh",role:"Co-Founder",roleType:"owner",desc:"Supports strategic planning, business growth, and high-level product decisions.",details:["Business strategy","Growth initiatives","Product direction"]},
+ {name:"Gamel Alshaer",role:"CTO",roleType:"cto",desc:"Responsible for technical architecture, technology choices, and engineering standards.",details:["Architecture","Tech decisions","Engineering standards"]},
+ {name:"Omnia Arafat",role:"Project Manager",roleType:"pm",desc:"Owns planning, scope, timelines, task prioritization, and cross-team coordination.",details:["Planning","Timeline control","Coordination"]},
+ {name:"Menna Emara",role:"Product Designer",roleType:"design",desc:"Responsible for UX/UI, user flows, wireframes, and product experience decisions.",details:["UX research","UI design","User journeys"]},
+ {name:"Amr Taha",role:"Frontend Developer",roleType:"frontend",desc:"Implements UI designs, frontend logic, and ensures smooth user interactions.",details:["UI implementation","Performance","Frontend logic"]},
+ {name:"Eslam Elsayed",role:"Backend Developer",roleType:"backend",desc:"Handles APIs, databases, business logic, and system integrations.",details:["APIs","Databases","Integrations"]},
+ {name:"Momen Mohamed",role:"Flutter Developer",roleType:"mobile",desc:"Builds and maintains mobile applications using Flutter.",details:["Flutter apps","Cross-platform","Optimization"]},
+ {name:"Baraa Hamza",role:"Customer Support & Sales",roleType:"support",desc:"Manages client communication, onboarding, support, and sales follow-ups.",details:["Onboarding","Support","Sales follow-up"]},
+ {name:"Reema Abdurahman",role:"Customer Support & Sales",roleType:"support",desc:"Supports customers, handles inquiries, and assists with sales operations.",details:["Customer support","Inquiries","Sales assistance"]}
 ];
 
 let team=JSON.parse(localStorage.getItem("teamData"))||defaultTeam;
@@ -251,13 +279,11 @@ function render(){
     grid.innerHTML+=`
       <div class="card" onclick="openTeam(${i})">
         <div class="name">${m.name}</div>
-        <div class="role">${m.role}</div>
+        <div class="role ${m.roleType}">${m.role}</div>
         <div class="desc">${m.desc}</div>
       </div>`;
   });
 }
-
-let activeIndex=null;
 
 function openTeam(i){
   activeIndex=i;
@@ -265,11 +291,9 @@ function openTeam(i){
   teamModal.classList.add("open");
   modalBody.innerHTML=`
     <h2 contenteditable="${isAdmin}">${team[i].name}</h2>
-    <p contenteditable="${isAdmin}">${team[i].role}</p>
+    <div class="role ${team[i].roleType}" contenteditable="${isAdmin}">${team[i].role}</div>
     <p contenteditable="${isAdmin}">${team[i].desc}</p>
-    <ul>
-      ${team[i].details.map(d=>`<li contenteditable="${isAdmin}">${d}</li>`).join("")}
-    </ul>`;
+    <ul>${team[i].details.map(d=>`<li contenteditable="${isAdmin}">${d}</li>`).join("")}</ul>`;
 }
 
 function closeTeam(){
@@ -313,6 +337,7 @@ function save(){
   team[activeIndex].desc=els[2].innerText;
   team[activeIndex].details=[...modalBody.querySelectorAll("li")].map(li=>li.innerText);
   localStorage.setItem("teamData",JSON.stringify(team));
+  render();
 }
 
 if(localStorage.getItem("theme")==="dark") document.body.classList.add("dark");
