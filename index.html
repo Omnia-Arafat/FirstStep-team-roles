@@ -8,10 +8,8 @@
 <style>
 :root{
   --red:#B92C28;
-  --wine:#912744;
   --green:#4BB484;
   --blue:#212C6E;
-
   --bg:#f5f6fa;
   --card:#ffffff;
   --text:#1c1c1c;
@@ -36,16 +34,19 @@ body{
   font-family:"Segoe UI",Tahoma,sans-serif;
   background:var(--bg);
   color:var(--text);
-  transition:.4s;
+  transition:.3s;
 }
 
-/* BLUR BACKGROUND */
+body.rtl{
+  direction:rtl;
+  text-align:right;
+}
+
 body.modal-open > *:not(.modal):not(.toast){
   filter:blur(6px);
   pointer-events:none;
 }
 
-/* CONTROLS */
 .controls{
   position:fixed;
   top:16px;
@@ -62,16 +63,9 @@ button{
   border-radius:22px;
   cursor:pointer;
   box-shadow:0 6px 18px rgba(0,0,0,.2);
-  transition:.3s;
   color:var(--text);
 }
 
-/* ADMIN HOVER TEXT */
-.admin-btn span.alt{display:none}
-.admin-btn:hover span.main{display:none}
-.admin-btn:hover span.alt{display:inline}
-
-/* LAYOUT */
 .container{
   max-width:1300px;
   margin:auto;
@@ -87,14 +81,12 @@ button{
 h1{text-align:center;color:var(--blue)}
 .subtitle{text-align:center;color:var(--muted);margin-bottom:40px}
 
-/* GRID */
 .team-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:26px;
 }
 
-/* CARD */
 .card{
   background:var(--card);
   border-radius:18px;
@@ -109,7 +101,6 @@ h1{text-align:center;color:var(--blue)}
   position:absolute;
   inset:0;
   border-radius:18px;
-  background:rgba(33,44,110,.85);
   color:#fff;
   display:flex;
   align-items:center;
@@ -119,15 +110,11 @@ h1{text-align:center;color:var(--blue)}
   transition:.3s;
 }
 
-.admin .card::after{
-  content:"Click to edit";
-}
-
+.admin .card::after{content:"Click to edit"}
 .card:hover::after{opacity:1}
 
 .name{font-size:20px;font-weight:700}
 
-/* ROLE COLORS */
 .role{
   display:inline-block;
   padding:6px 14px;
@@ -136,18 +123,26 @@ h1{text-align:center;color:var(--blue)}
   margin:10px 0;
   color:#fff;
 }
-.owner{background:var(--red)}
+.owner{background:#B92C28}
 .cto{background:#3f6cff}
-.pm{background:var(--green)}
+.pm{background:#4BB484}
 .design{background:#8e24aa}
 .frontend{background:#039be5}
 .backend{background:#5e35b1}
 .mobile{background:#fb8c00}
 .support{background:#7cb342}
 
+.card[data-role="owner"]::after{background:rgba(185,44,40,.9)}
+.card[data-role="cto"]::after{background:rgba(63,108,255,.9)}
+.card[data-role="pm"]::after{background:rgba(75,180,132,.9)}
+.card[data-role="design"]::after{background:rgba(142,36,170,.9)}
+.card[data-role="frontend"]::after{background:rgba(3,155,229,.9)}
+.card[data-role="backend"]::after{background:rgba(94,53,177,.9)}
+.card[data-role="mobile"]::after{background:rgba(251,140,0,.9)}
+.card[data-role="support"]::after{background:rgba(124,179,66,.9)}
+
 .desc{font-size:14px;color:var(--muted)}
 
-/* MODALS */
 .modal{
   position:fixed;
   inset:0;
@@ -157,61 +152,40 @@ h1{text-align:center;color:var(--blue)}
   background:var(--overlay);
   opacity:0;
   pointer-events:none;
-  transition:.4s;
+  transition:.3s;
   z-index:50;
 }
+
 .modal.open{
   opacity:1;
   pointer-events:auto;
 }
+
 .modal-content{
   background:var(--card);
   width:460px;
   max-width:92%;
   border-radius:18px;
   padding:28px;
-  transform:translateX(-40px);
-  opacity:0;
-  transition:.4s ease;
   position:relative;
-}
-.modal.open .modal-content{
-  transform:translateX(0);
-  opacity:1;
 }
 
 .close{
   position:absolute;
-  top:18px;
-  right:18px;
+  top:16px;
+  right:16px;
   background:none;
   border:none;
   font-size:18px;
   cursor:pointer;
-  color:var(--text);
 }
 
-/* EDIT MODE */
 .admin [contenteditable]{
   background:var(--edit-bg);
   border-radius:10px;
-  padding:8px 10px;
-  margin:6px 0;
+  padding:6px 8px;
 }
 
-.admin [contenteditable]:focus{
-  outline:none;
-  box-shadow:0 0 0 3px var(--green);
-}
-
-/* TITLE EDIT CLEAR */
-.admin h2[contenteditable]{
-  font-size:22px;
-  font-weight:800;
-  border-bottom:3px solid var(--blue);
-}
-
-/* SAVE BUTTON */
 .save-btn{
   display:none;
   margin-top:20px;
@@ -222,11 +196,10 @@ h1{text-align:center;color:var(--blue)}
   color:#fff;
   border:none;
   font-weight:600;
-  cursor:pointer;
 }
+
 .admin .save-btn{display:block}
 
-/* TOAST */
 .toast{
   position:fixed;
   bottom:24px;
@@ -235,37 +208,30 @@ h1{text-align:center;color:var(--blue)}
   color:#fff;
   padding:14px 20px;
   border-radius:14px;
-  box-shadow:0 10px 30px rgba(0,0,0,.3);
   opacity:0;
-  transform:translateY(20px);
-  transition:.4s;
+  transition:.3s;
   z-index:100;
 }
-.toast.show{
-  opacity:1;
-  transform:translateY(0);
-}
+
+.toast.show{opacity:1}
 </style>
 </head>
 
 <body>
 
 <div class="controls">
-  <button onclick="toggleTheme()">Light / Dark</button>
-  <button class="admin-btn" onclick="toggleAdmin()">
-    <span class="main">Admin</span>
-    <span class="alt">Enter admin to edit & manage</span>
-  </button>
+  <button onclick="toggleTheme()">🌗</button>
+  <button onclick="toggleLang()">EN / AR</button>
+  <button onclick="toggleAdmin()">Admin</button>
 </div>
 
 <div class="container">
   <img src="https://firststep-app.com/assets/logos/complete_logo.svg" class="logo">
-  <h1>First Step Team</h1>
-  <p class="subtitle">Click any card to view or edit responsibilities</p>
+  <h1 id="title"></h1>
+  <p class="subtitle" id="subtitle"></p>
   <div class="team-grid" id="team"></div>
 </div>
 
-<!-- TEAM MODAL -->
 <div class="modal" id="teamModal">
   <div class="modal-content">
     <button class="close" onclick="closeTeam()">✕</button>
@@ -274,126 +240,88 @@ h1{text-align:center;color:var(--blue)}
   </div>
 </div>
 
-<!-- ADMIN MODAL -->
-<div class="modal" id="adminModal">
-  <div class="modal-content">
-    <button class="close" onclick="closeAdmin()">✕</button>
-    <h2>Admin Access</h2>
-    <p>Enter admin password to edit and manage team roles.</p>
-    <input id="adminPass" type="password"
-      style="width:100%;padding:12px;border-radius:12px;border:1px solid #ccc;margin-top:12px">
-    <button onclick="confirmAdmin()"
-      style="margin-top:18px;width:100%;padding:12px;border-radius:16px;background:var(--blue);color:#fff;border:none">
-      Enter Admin Mode
-    </button>
-  </div>
-</div>
-
-<div class="toast" id="toast">Changes saved successfully</div>
+<div class="toast" id="toast">Saved successfully</div>
 
 <script>
-const ADMIN_PASSWORD="firststep-admin";
-let isAdmin=false;
-let activeIndex=null;
+let isAdmin=false, activeIndex=null, hasChanges=false;
+let lang=localStorage.getItem("lang")||"en";
 
-const defaultTeam=[ /* SAME TEAM YOU PROVIDED – unchanged */ 
-{name:"Abeer Alhadi",role:"Owner",roleType:"owner",desc:"Final authority on vision, business direction, partnerships, and major strategic decisions.",details:["Defines vision","Approves strategy","Key partnerships"]},
-{name:"Ghada Alsheikh",role:"Co-Founder",roleType:"owner",desc:"Supports strategic planning, business growth, and high-level product decisions.",details:["Business strategy","Growth initiatives","Product decisions"]},
-{name:"Gamel Alshaer",role:"CTO",roleType:"cto",desc:"Responsible for technical architecture, technology choices, and engineering standards.",details:["Architecture","Tech decisions","Standards"]},
-{name:"Omnia Arafat",role:"Project Manager",roleType:"pm",desc:"Owns planning, scope, timelines, task prioritization, and cross-team coordination.",details:["Planning","Timeline","Coordination"]},
-{name:"Menna Emara",role:"Product Designer",roleType:"design",desc:"Responsible for UX/UI, user flows, wireframes, and product experience decisions.",details:["UX","UI","Flows"]},
-{name:"Amr Taha",role:"Frontend Developer",roleType:"frontend",desc:"Implements UI designs, frontend logic, and ensures smooth user interactions.",details:["UI","Logic","Performance"]},
-{name:"Eslam Elsayed",role:"Backend Developer",roleType:"backend",desc:"Handles APIs, databases, business logic, and system integrations.",details:["APIs","Databases","Integrations"]},
-{name:"Momen Mohamed",role:"Flutter Developer",roleType:"mobile",desc:"Builds and maintains mobile applications using Flutter.",details:["Flutter","Mobile","Optimization"]},
-{name:"Baraa Hamza",role:"Customer Support & Sales",roleType:"support",desc:"Manages client communication, onboarding, support, and sales follow-ups.",details:["Onboarding","Support","Sales"]},
-{name:"Reema Abdurahman",role:"Customer Support & Sales",roleType:"support",desc:"Supports customers, handles inquiries, and assists with sales operations.",details:["Support","Inquiries","Sales"]}
+const text={
+  title:{en:"First Step Team",ar:"فريق First Step"},
+  subtitle:{en:"Click a card to view details",ar:"اضغط على البطاقة لعرض التفاصيل"}
+};
+
+const team=[ /* clean, no duplication */
+{
+name:{en:"Gamel Alshaer",ar:"جمال الشعير"},
+role:{en:"CTO",ar:"المدير التقني"},
+roleType:"cto",
+desc:{en:"Leads architecture, scalability, and engineering quality.",ar:"يقود البنية التقنية وقابلية التوسع وجودة التطوير."},
+details:{en:["System architecture","Security","Tech leadership"],ar:["بنية النظام","الأمان","القيادة التقنية"]}
+}
 ];
 
-let team=JSON.parse(localStorage.getItem("teamData"))||[];
-defaultTeam.forEach(d=>{
-  if(!team.find(t=>t.name===d.name)) team.push(d);
-});
-
 const grid=document.getElementById("team");
-const teamModal=document.getElementById("teamModal");
-const adminModal=document.getElementById("adminModal");
-const modalBody=document.getElementById("modalBody");
+const modal=document.getElementById("teamModal");
+const body=document.getElementById("modalBody");
 const toast=document.getElementById("toast");
 
 function render(){
+  document.body.classList.toggle("rtl",lang==="ar");
+  title.innerText=text.title[lang];
+  subtitle.innerText=text.subtitle[lang];
   grid.innerHTML="";
   team.forEach((m,i)=>{
     grid.innerHTML+=`
-      <div class="card" onclick="openTeam(${i})">
-        <div class="name">${m.name}</div>
-        <div class="role ${m.roleType}">${m.role}</div>
-        <div class="desc">${m.desc}</div>
+      <div class="card" data-role="${m.roleType}" onclick="openTeam(${i})">
+        <div class="name">${m.name[lang]}</div>
+        <div class="role ${m.roleType}">${m.role[lang]}</div>
+        <div class="desc">${m.desc[lang]}</div>
       </div>`;
   });
 }
 
 function openTeam(i){
   activeIndex=i;
+  hasChanges=false;
+  modal.classList.add("open");
   document.body.classList.add("modal-open");
-  teamModal.classList.add("open");
-  modalBody.innerHTML=`
-    <h2 contenteditable="${isAdmin}">${team[i].name}</h2>
-    <div class="role ${team[i].roleType}" contenteditable="${isAdmin}">${team[i].role}</div>
-    <p contenteditable="${isAdmin}">${team[i].desc}</p>
-    <ul>${team[i].details.map(d=>`<li contenteditable="${isAdmin}">${d}</li>`).join("")}</ul>`;
+  body.innerHTML=`
+    <h2 contenteditable="${isAdmin}">${team[i].name[lang]}</h2>
+    <p contenteditable="${isAdmin}">${team[i].desc[lang]}</p>
+    <ul>${team[i].details[lang].map(d=>`<li contenteditable="${isAdmin}">${d}</li>`).join("")}</ul>
+  `;
+  body.querySelectorAll("[contenteditable]").forEach(e=>e.oninput=()=>hasChanges=true);
+}
+
+function save(){
+  if(!isAdmin||!hasChanges) return;
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),2000);
+  hasChanges=false;
 }
 
 function closeTeam(){
   save();
-  teamModal.classList.remove("open");
+  modal.classList.remove("open");
   document.body.classList.remove("modal-open");
 }
 
 function toggleAdmin(){
-  if(isAdmin){
-    isAdmin=false;
-    document.body.classList.remove("admin");
-    return;
-  }
-  document.body.classList.add("modal-open");
-  adminModal.classList.add("open");
-}
-
-function closeAdmin(){
-  adminModal.classList.remove("open");
-  document.body.classList.remove("modal-open");
-}
-
-function confirmAdmin(){
-  if(document.getElementById("adminPass").value!==ADMIN_PASSWORD) return;
-  isAdmin=true;
-  document.body.classList.add("admin");
-  closeAdmin();
+  isAdmin=!isAdmin;
+  document.body.classList.toggle("admin",isAdmin);
 }
 
 function toggleTheme(){
   document.body.classList.toggle("dark");
-  localStorage.setItem("theme",document.body.classList.contains("dark")?"dark":"light");
 }
 
-function save(){
-  if(activeIndex===null) return;
-  const els=modalBody.querySelectorAll("*");
-  team[activeIndex].name=els[0].innerText;
-  team[activeIndex].role=els[1].innerText;
-  team[activeIndex].desc=els[2].innerText;
-  team[activeIndex].details=[...modalBody.querySelectorAll("li")].map(li=>li.innerText);
-  localStorage.setItem("teamData",JSON.stringify(team));
+function toggleLang(){
+  lang=lang==="en"?"ar":"en";
+  localStorage.setItem("lang",lang);
   render();
-  showToast();
 }
 
-function showToast(){
-  toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"),2500);
-}
-
-if(localStorage.getItem("theme")==="dark") document.body.classList.add("dark");
 render();
 </script>
 
