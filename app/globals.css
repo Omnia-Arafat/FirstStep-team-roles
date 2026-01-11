@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+:root {
+  --red: #B92C28;
+  --green: #4BB484;
+  --blue: #212C6E;
+  --bg: #f5f6fa;
+  --card: #ffffff;
+  --text: #1c1c1c;
+  --muted: #555;
+  --overlay: rgba(0, 0, 0, 0.45);
+  --edit-bg: #eef2ff;
+}
+
+.dark {
+  --bg: #0f1328;
+  --card: #1f2552;
+  --text: #f5f7ff;
+  --muted: #d0d4ff;
+  --overlay: rgba(0, 0, 0, 0.65);
+  --edit-bg: #2c3375;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
+}
+
+body.modal-open > *:not(.modal):not(.toast):not(.admin-dialog) {
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.admin [contenteditable] {
+  background: var(--edit-bg);
+  border-radius: 10px;
+  padding: 6px 8px;
+}
+
+/* Custom Scrollbar - Applied Globally */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4d5edb #f7f8fa;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: #f7f8fa;
+  border-radius: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #4d5edb;
+  border-radius: 6px;
+  min-height: 40px;
+  min-width: 40px;
+  transition: background 0.2s;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #22336c;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f7f8fa;
+  border-radius: 6px;
+}
+
+/* Dark mode scrollbar */
+.dark * {
+  scrollbar-color: #4BB484 #1f2552;
+}
+
+.dark *::-webkit-scrollbar {
+  background: #1f2552;
+}
+
+.dark *::-webkit-scrollbar-thumb {
+  background: #4BB484;
+}
+
+.dark *::-webkit-scrollbar-thumb:hover {
+  background: #3a9870;
+}
+
+.dark *::-webkit-scrollbar-track {
+  background: #1f2552;
+}
+
+/* Custom scrollbar class for backwards compatibility */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #4d5edb #f7f8fa;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: #f7f8fa;
+  border-radius: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #4d5edb;
+  border-radius: 6px;
+  min-height: 40px;
+  min-width: 40px;
+  transition: background 0.2s;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #22336c;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f7f8fa;
+  border-radius: 6px;
+}
+
+/* Custom Text Selection */
+::selection {
+  background: #4d5edb;
+  color: #ffffff;
+  text-shadow: none;
+}
+
+::-moz-selection {
+  background: #4d5edb;
+  color: #ffffff;
+  text-shadow: none;
+}
+
+.dark ::selection {
+  background: #4BB484;
+  color: #0f1328;
+  text-shadow: none;
+}
+
+.dark ::-moz-selection {
+  background: #4BB484;
+  color: #0f1328;
+  text-shadow: none;
+}
+
+/* Input and textarea selection */
+input::selection,
+textarea::selection {
+  background: #4d5edb;
+  color: #ffffff;
+}
+
+.dark input::selection,
+.dark textarea::selection {
+  background: #4BB484;
+  color: #0f1328;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus Styles */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.dark button:focus-visible,
+.dark input:focus-visible,
+.dark textarea:focus-visible {
+  outline-color: var(--green);
+}
+
+/* Transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
