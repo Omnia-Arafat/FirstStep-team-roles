@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { TeamMember } from '@/types/team';
-import type { TeamMember as DbTeamMember } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 
 export async function GET() {
   try {
     const teamMembers = await prisma.teamMember.findMany();
     
     // Transform database model to app model
-const transformed: TeamMember[] = teamMembers.map((member: DbTeamMember) => ({
+const transformed: TeamMember[] = teamMembers.map((member: Prisma.TeamMember) => ({
       id: member.id,
       name: { en: member.nameEn, ar: member.nameAr },
       role: { en: member.roleEn, ar: member.roleAr },
