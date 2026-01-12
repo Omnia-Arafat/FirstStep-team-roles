@@ -1,15 +1,14 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { TeamMember } from '@/types/team';
+import type { TeamMember as DbTeamMember } from '@prisma/client';
 
 export async function GET() {
   try {
-    const teamMembers = await prisma.teamMember.findMany({
-      orderBy: { id: 'asc' },
-    });
+    const teamMembers = await prisma.teamMember.findMany();
     
     // Transform database model to app model
-    const transformed: TeamMember[] = teamMembers.map((member) => ({
+const transformed: TeamMember[] = teamMembers.map((member: DbTeamMember) => ({
       id: member.id,
       name: { en: member.nameEn, ar: member.nameAr },
       role: { en: member.roleEn, ar: member.roleAr },
@@ -18,7 +17,31 @@ export async function GET() {
       details: { en: member.detailsEn, ar: member.detailsAr },
     }));
     
-    return NextResponse.json(transformed);
+    // Define priority order: owner, cto, pm, then others
+    const roleOrder: Record<string, number> = {
+      owner: 1,
+      cto: 2,
+      pm: 3,
+      design: 4,
+      frontend: 5,
+      backend: 6,
+      mobile: 7,
+      support: 8,
+    };
+    
+    // Sort: leadership roles first (owner, co-founder, cto, pm), then by original ID
+    const sorted = transformed.sort((a, b) => {
+      const orderA = roleOrder[a.roleType] || 999;
+      const orderB = roleOrder[b.roleType] || 999;
+      
+      if (orderA !== orderB) {
+        return orderA - orderB;
+      }
+      // If same role type, maintain original order by ID
+      return parseInt(a.id) - parseInt(b.id);
+    });
+    
+    return NextResponse.json(sorted);
   } catch (error) {
     console.error('Error fetching team members:', error);
     return NextResponse.json({ error: 'Failed to fetch team members' }, { status: 500 });
