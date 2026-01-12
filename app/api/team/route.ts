@@ -1,14 +1,17 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { TeamMember } from '@/types/team';
-import type { Prisma } from '@prisma/client';
+
+// Infer the DB row type from the Prisma client to avoid importing Prisma namespace types
+// This is Vercel-friendly and works without relying on '@prisma/client' type re-exports
+export type DbMember = Awaited<ReturnType<typeof prisma.teamMember.findMany>>[number];
 
 export async function GET() {
   try {
     const teamMembers = await prisma.teamMember.findMany();
     
     // Transform database model to app model
-const transformed: TeamMember[] = teamMembers.map((member: Prisma.TeamMember) => ({
+const transformed: TeamMember[] = teamMembers.map((member: DbMember) => ({
       id: member.id,
       name: { en: member.nameEn, ar: member.nameAr },
       role: { en: member.roleEn, ar: member.roleAr },
