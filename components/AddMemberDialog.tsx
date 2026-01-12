@@ -2,6 +2,7 @@
 
 import { useState, useEffect, FormEvent } from 'react';
 import { useApp } from '@/contexts/AppContext';
+import { useTranslation } from '@/hooks/useTranslation';
 import { TeamMember, RoleType } from '@/types/team';
 import { X, UserPlus } from 'lucide-react';
 
@@ -12,19 +13,11 @@ interface AddMemberDialogProps {
   editMember?: TeamMember | null;
 }
 
-const roleTypes: { value: RoleType; label: { en: string; ar: string } }[] = [
-  { value: 'owner', label: { en: 'Owner', ar: 'المالك' } },
-  { value: 'cto', label: { en: 'CTO', ar: 'المدير التقني' } },
-  { value: 'pm', label: { en: 'Project Manager', ar: 'مدير المشروع' } },
-  { value: 'design', label: { en: 'Designer', ar: 'مصمم' } },
-  { value: 'frontend', label: { en: 'Frontend Developer', ar: 'مطور واجهات' } },
-  { value: 'backend', label: { en: 'Backend Developer', ar: 'مطور خلفي' } },
-  { value: 'mobile', label: { en: 'Mobile Developer', ar: 'مطور تطبيقات' } },
-  { value: 'support', label: { en: 'Support', ar: 'دعم' } },
-];
+const roleTypeValues: RoleType[] = ['owner', 'cto', 'pm', 'design', 'frontend', 'backend', 'mobile', 'support'];
 
 export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }: AddMemberDialogProps) {
   const { language } = useApp();
+  const { t } = useTranslation();
   
   const [formData, setFormData] = useState({
     nameEn: '',
@@ -67,20 +60,6 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
     }
   }, [editMember, isOpen]);
 
-  const text = {
-    title: { en: editMember ? 'Edit Team Member' : 'Add Team Member', ar: editMember ? 'تعديل عضو الفريق' : 'إضافة عضو للفريق' },
-    nameEn: { en: 'Name (English)', ar: 'الاسم (إنجليزي)' },
-    nameAr: { en: 'Name (Arabic)', ar: 'الاسم (عربي)' },
-    roleEn: { en: 'Role (English)', ar: 'المنصب (إنجليزي)' },
-    roleAr: { en: 'Role (Arabic)', ar: 'المنصب (عربي)' },
-    roleType: { en: 'Role Type', ar: 'نوع المنصب' },
-    descEn: { en: 'Description (English)', ar: 'الوصف (إنجليزي)' },
-    descAr: { en: 'Description (Arabic)', ar: 'الوصف (عربي)' },
-    detailsEn: { en: 'Responsibilities (English, one per line)', ar: 'المهام (إنجليزي، واحد لكل سطر)' },
-    detailsAr: { en: 'Responsibilities (Arabic, one per line)', ar: 'المهام (عربي، واحد لكل سطر)' },
-    saveButton: { en: editMember ? 'Update' : 'Add Member', ar: editMember ? 'تحديث' : 'إضافة عضو' },
-    cancelButton: { en: 'Cancel', ar: 'إلغاء' },
-  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -133,7 +112,7 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
             <UserPlus size={24} className="text-white" />
           </div>
           <h2 className="text-2xl font-bold text-[var(--text)]">
-            {text.title[language]}
+            {t(editMember ? 'addMemberDialog.titleEdit' : 'addMemberDialog.titleAdd')}
           </h2>
         </div>
 
@@ -142,7 +121,7 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 text-sm font-medium text-[var(--text)]">
-                  {text.nameEn[language]}
+                  {t('addMemberDialog.nameEn')}
                 </label>
                 <input
                   type="text"
@@ -154,7 +133,7 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
               </div>
               <div>
                 <label className="block mb-1 text-sm font-medium text-[var(--text)]">
-                  {text.nameAr[language]}
+                  {t('addMemberDialog.nameAr')}
                 </label>
                 <input
                   type="text"
@@ -169,16 +148,16 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
 
             <div>
               <label className="block mb-1 text-sm font-medium text-[var(--text)]">
-                {text.roleType[language]}
+                {t('addMemberDialog.roleType')}
               </label>
               <select
                 value={formData.roleType}
                 onChange={(e) => setFormData({ ...formData, roleType: e.target.value as RoleType })}
                 className="w-full px-3 py-2 rounded-lg border-2 border-[var(--muted)] bg-[var(--bg)] text-[var(--text)] focus:border-[var(--blue)] outline-none"
               >
-                {roleTypes.map((rt) => (
-                  <option key={rt.value} value={rt.value}>
-                    {rt.label[language]}
+                {roleTypeValues.map((rt) => (
+                  <option key={rt} value={rt}>
+                    {t(`roleTypes.${rt}`)}
                   </option>
                 ))}
               </select>
@@ -187,7 +166,7 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 text-sm font-medium text-[var(--text)]">
-                  {text.roleEn[language]}
+                  {t('addMemberDialog.roleEn')}
                 </label>
                 <input
                   type="text"
@@ -199,7 +178,7 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
               </div>
               <div>
                 <label className="block mb-1 text-sm font-medium text-[var(--text)]">
-                  {text.roleAr[language]}
+                  {t('addMemberDialog.roleAr')}
                 </label>
                 <input
                   type="text"
@@ -215,7 +194,7 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 text-sm font-medium text-[var(--text)]">
-                  {text.descEn[language]}
+                  {t('addMemberDialog.descEn')}
                 </label>
                 <textarea
                   value={formData.descEn}
@@ -227,7 +206,7 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
               </div>
               <div>
                 <label className="block mb-1 text-sm font-medium text-[var(--text)]">
-                  {text.descAr[language]}
+                  {t('addMemberDialog.descAr')}
                 </label>
                 <textarea
                   value={formData.descAr}
@@ -243,7 +222,7 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 text-sm font-medium text-[var(--text)]">
-                  {text.detailsEn[language]}
+                  {t('addMemberDialog.detailsEn')}
                 </label>
                 <textarea
                   value={formData.detailsEn}
@@ -255,7 +234,7 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
               </div>
               <div>
                 <label className="block mb-1 text-sm font-medium text-[var(--text)]">
-                  {text.detailsAr[language]}
+                  {t('addMemberDialog.detailsAr')}
                 </label>
                 <textarea
                   value={formData.detailsAr}
@@ -274,14 +253,14 @@ export default function AddMemberDialog({ isOpen, onClose, onSave, editMember }:
               type="submit"
               className="flex-1 py-3 rounded-xl bg-[var(--blue)] text-white font-semibold hover:opacity-90 transition-opacity"
             >
-              {text.saveButton[language]}
+              {t(editMember ? 'addMemberDialog.updateButton' : 'addMemberDialog.saveButton')}
             </button>
             <button
               type="button"
               onClick={handleClose}
               className="flex-1 py-3 rounded-xl bg-[var(--muted)] text-white font-semibold hover:opacity-90 transition-opacity"
             >
-              {text.cancelButton[language]}
+              {t('addMemberDialog.cancelButton')}
             </button>
           </div>
         </form>

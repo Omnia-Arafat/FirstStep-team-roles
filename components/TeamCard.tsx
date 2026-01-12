@@ -2,6 +2,7 @@
 
 import { TeamMember, RoleType } from '@/types/team';
 import { useApp } from '@/contexts/AppContext';
+import { useTranslation } from '@/hooks/useTranslation';
 import { motion } from 'framer-motion';
 
 interface TeamCardProps {
@@ -33,15 +34,10 @@ const roleOverlayColors: Record<RoleType, string> = {
 };
 
 export default function TeamCard({ member, onClick, index }: TeamCardProps) {
-  const { language, isAdmin } = useApp();
+  const { isAdmin } = useApp();
+  const { t, language } = useTranslation();
 
-  const overlayText = isAdmin
-    ? language === 'en'
-      ? 'Click to edit'
-      : 'اضغط للتعديل'
-    : language === 'en'
-    ? 'View details'
-    : 'عرض التفاصيل';
+  const overlayText = isAdmin ? t('teamCard.clickToEdit') : t('teamCard.viewDetails');
 
   return (
     <motion.div

@@ -21,12 +21,20 @@ export const teamData: TeamMember[] = [
     role: { en: "Co-Founder", ar: "الشريكة المؤسسة" },
     roleType: "owner",
     desc: {
-      en: "Supports strategic planning, business growth initiatives, and high-level product decisions.",
-      ar: "تدعم التخطيط الاستراتيجي، مبادرات نمو الأعمال، وقرارات المنتج على مستوى عالي."
+      en: "Early Childhood Consultant and Educational Projects Expert, supporting strategic planning and growth initiatives while ensuring that product decisions align with early childhood standards, educational quality, and child-centered best practices.",
+      ar: "استشارية في الطفولة المبكرة وخبيرة في المشاريع التعليمية، تدعم التخطيط الاستراتيجي ومبادرات النمو مع ضمان توافق قرارات المنتج مع معايير الطفولة المبكرة والجودة التعليمية وأفضل الممارسات المتمحورة حول الطفل."
     },
     details: {
-      en: ["Business strategy planning", "Growth initiatives oversight", "Product decision support"],
-      ar: ["تخطيط استراتيجية الأعمال", "متابعة مبادرات النمو", "دعم قرارات المنتج"]
+      en: [
+        "Early childhood and educational consultancy",
+        "Strategic planning for education-focused projects",
+        "Educational quality and product decision support"
+      ],
+      ar: [
+        "استشارات الطفولة المبكرة والتعليم",
+        "التخطيط الاستراتيجي للمشاريع التعليمية",
+        "دعم الجودة التعليمية وقرارات المنتج"
+      ]
     }
   },
   {
@@ -53,32 +61,50 @@ export const teamData: TeamMember[] = [
       ar: "تشرف على تنفيذ المشاريع، العمليات اليومية، تنسيق الفريق، وتنفيذ تطوير الواجهة الأمامية. لها الحق بالموافقة أو الرفض على أي قرار يومي أو داخلي للفريق، إصدار الإنذارات الرسمية، وإدارة أولويات المهام في حالة غياب المدير التقني."
     },
     details: {
-      en: [
-        "Project oversight & daily operations",
-        "Decision authority on internal team matters",
-        "Task prioritization in CTO absence",
-        "Issue official warnings",
-        "Problem solving & client issue management",
-        "Internal & external communication coordination",
-        "Server & system monitoring",
-        "Onboarding new team members",
-        "Frontend development supervision & quality assurance",
-        "Implement UI designs and frontend logic review",
-        "Ensure smooth frontend performance"
-      ],
-      ar: [
-        "إشراف على تنفيذ المشاريع والعمليات اليومية",
-        "سلطة اتخاذ القرار على الأمور الداخلية للفريق",
-        "تحديد أولويات المهام في حالة غياب المدير التقني",
-        "إصدار الإنذارات الرسمية",
-        "حل المشاكل وإدارة قضايا العملاء",
-        "تنسيق التواصل الداخلي والخارجي مع الفريق",
-        "متابعة السيرفرات والنظام",
-        "تهيئة وإدخال الأعضاء الجدد للنظام",
-        "الإشراف على تطوير الواجهة الأمامية وضمان الجودة",
-        "مراجعة تنفيذ تصميمات الواجهة الأمامية والمنطق البرمجي",
-        "ضمان الأداء السلس للواجهة الأمامية"
-      ]
+        en: [
+            "--- Project Management ---",
+            "Project oversight & daily operations",
+            "Decision authority on internal team matters",
+            "Task prioritization in CTO absence",
+            "Issue official warnings",
+            "Problem solving & client issue management",
+            "Internal & external communication coordination",
+            "Server & system monitoring",
+            "Onboarding new team members",
+            "",
+            "--- Frontend Development ---",
+            "Frontend development supervision & quality assurance",
+            "Implement UI designs and frontend logic",
+            "Code review and frontend architecture decisions",
+            "Component development and state management",
+            "Performance optimization and debugging",
+            "Responsive design implementation",
+            "Integration with backend APIs",
+            "Testing and cross-browser compatibility",
+            "Ensure smooth frontend performance"
+        ],
+        ar: [
+            "--- إدارة المشاريع ---",
+            "إشراف على تنفيذ المشاريع والعمليات اليومية",
+            "سلطة اتخاذ القرار على الأمور الداخلية للفريق",
+            "تحديد أولويات المهام في حالة غياب المدير التقني",
+            "إصدار الإنذارات الرسمية",
+            "حل المشاكل وإدارة قضايا العملاء",
+            "تنسيق التواصل الداخلي والخارجي مع الفريق",
+            "متابعة السيرفرات والنظام",
+            "تهيئة وإدخال الأعضاء الجدد للنظام",
+            "",
+            "--- تطوير الواجهة الأمامية ---",
+            "الإشراف على تطوير الواجهة الأمامية وضمان الجودة",
+            "تنفيذ تصميمات الواجهة والمنطق البرمجي",
+            "مراجعة الكود وقرارات بنية الواجهة الأمامية",
+            "تطوير المكونات وإدارة الحالة",
+            "تحسين الأداء وإصلاح الأخطاء",
+            "تنفيذ التصميم المتجاوب",
+            "التكامل مع واجهات برمجة التطبيقات",
+            "الاختبار والتوافق مع مختلف المتصفحات",
+            "ضمان الأداء السلس للواجهة الأمامية"
+        ]
     }
   },
   {
@@ -195,12 +221,34 @@ export const teamData: TeamMember[] = [
     role: { en: "Marketer", ar: "مسؤولة التسويق" },
     roleType: "pm",
     desc: {
-      en: "Responsible for marketing strategy, content creation, sales guidance, advertising campaigns, and coordination with design teams.",
-      ar: "مسؤولة عن استراتيجية التسويق، إنشاء المحتوى، توجيه فريق المبيعات، الحملات الإعلانية، والتنسيق مع فرق التصميم."
+      en: "Responsible for market and competitors analysis, marketing strategy, content creation, SEO optimization, advertising campaigns management, and coordination with design teams.",
+      ar: "مسؤولة عن تحليل السوق والمنافسين، استراتيجية التسويق، إنشاء المحتوى، تحسين محركات البحث، إدارة الحملات الإعلانية، والتنسيق مع فرق التصميم."
     },
     details: {
-      en: ["Marketing strategy", "Content creation", "Sales team guidance", "Advertising campaigns", "Coordination with designers"],
-      ar: ["استراتيجية التسويق", "إنشاء المحتوى", "توجيه فريق المبيعات", "الحملات الإعلانية", "التنسيق مع المصممين"]
+      en: [
+        "Market & Competitors Analysis",
+        "Marketing Strategy & Growth Planning",
+        "Content Strategy & Creation (Social + Website)",
+        "SEO Strategy & Website Optimization",
+        "Advertising Campaigns Management & Optimization",
+        "Marketing Analytics & Performance Tracking",
+        "Lead Generation & Funnel Optimization",
+        "Sales Enablement (Direction & Insights, not Sales Management)",
+        "Brand Positioning & Messaging",
+        "Coordination with Designers"
+      ],
+      ar: [
+        "تحليل السوق والمنافسين",
+        "استراتيجية التسويق وتخطيط النمو",
+        "استراتيجية وإنشاء المحتوى (سوشيال ميديا + الموقع)",
+        "استراتيجية تحسين محركات البحث وتحسين الموقع",
+        "إدارة وتحسين الحملات الإعلانية",
+        "تحليلات التسويق وتتبع الأداء",
+        "توليد العملاء المحتملين وتحسين مسار التحويل",
+        "تمكين المبيعات (التوجيه والرؤى، ليس إدارة المبيعات)",
+        "تموضع العلامة التجارية والرسائل",
+        "التنسيق مع المصممين"
+      ]
     }
   },
   {

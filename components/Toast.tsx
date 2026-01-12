@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useApp } from '@/contexts/AppContext';
+import { useTranslation } from '@/hooks/useTranslation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ToastProps {
@@ -10,7 +10,7 @@ interface ToastProps {
 }
 
 export default function Toast({ show, message }: ToastProps) {
-  const { language } = useApp();
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -23,8 +23,6 @@ export default function Toast({ show, message }: ToastProps) {
     }
   }, [show]);
 
-  const defaultMessage = language === 'en' ? 'Saved successfully' : 'تم الحفظ بنجاح';
-
   return (
     <AnimatePresence>
       {visible && (
@@ -35,7 +33,7 @@ export default function Toast({ show, message }: ToastProps) {
           exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
           transition={{ type: 'spring', damping: 15, stiffness: 300 }}
         >
-          {message || defaultMessage}
+          {message || t('toast.savedSuccessfully')}
         </motion.div>
       )}
     </AnimatePresence>

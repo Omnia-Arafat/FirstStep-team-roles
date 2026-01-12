@@ -1,0 +1,90 @@
+{
+  "common": {
+    "loading": "جاري التحميل...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "update": "تحديث",
+    "close": "إغلاق",
+    "confirm": "تأكيد",
+    "success": "نجح",
+    "error": "خطأ"
+  },
+  "header": {
+    "title": "فريق First Step",
+    "subtitle": "اضغط على البطاقة لعرض أو تعديل المهام"
+  },
+  "controls": {
+    "themeToggle": "تبديل المظهر",
+    "languageToggle": "تبديل اللغة",
+    "admin": "Admin",
+    "adminActive": "وضع المدير نشط",
+    "adminLogin": "تسجيل دخول المدير"
+  },
+  "team": {
+    "addMember": "إضافة عضو للفريق"
+  },
+  "teamCard": {
+    "viewDetails": "عرض التفاصيل",
+    "clickToEdit": "اضغط للتعديل"
+  },
+  "teamModal": {
+    "editButton": "تعديل العضو",
+    "deleteButton": "حذف العضو",
+    "frontendBadge": "مطور واجهات"
+  },
+  "adminDialog": {
+    "title": "مصادقة المدير",
+    "passwordLabel": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة مرور المدير",
+    "loginButton": "تسجيل الدخول",
+    "cancelButton": "إلغاء",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "errorMessage": "كلمة المرور غير صحيحة",
+    "recoveryTitle": "استعادة كلمة المرور",
+    "recoveryMessage": "سيتم إرسال كلمة المرور إلى: {{email}}",
+    "sendRecovery": "إرسال كلمة المرور",
+    "backToLogin": "العودة لتسجيل الدخول",
+    "recoverySentTitle": "تم إرسال كلمة المرور!",
+    "recoverySentMessage": "تم إرسال كلمة المرور إلى {{email}}"
+  },
+  "addMemberDialog": {
+    "titleAdd": "إضافة عضو للفريق",
+    "titleEdit": "تعديل عضو الفريق",
+    "nameEn": "الاسم (إنجليزي)",
+    "nameAr": "الاسم (عربي)",
+    "roleEn": "المنصب (إنجليزي)",
+    "roleAr": "المنصب (عربي)",
+    "roleType": "نوع المنصب",
+    "descEn": "الوصف (إنجليزي)",
+    "descAr": "الوصف (عربي)",
+    "detailsEn": "المهام (إنجليزي، واحد لكل سطر)",
+    "detailsAr": "المهام (عربي، واحد لكل سطر)",
+    "saveButton": "إضافة عضو",
+    "updateButton": "تحديث",
+    "cancelButton": "إلغاء"
+  },
+  "roleTypes": {
+    "owner": "المالك",
+    "cto": "المدير التقني",
+    "pm": "مدير المشروع",
+    "design": "مصمم",
+    "frontend": "مطور واجهات",
+    "backend": "مطور خلفي",
+    "mobile": "مطور تطبيقات",
+    "support": "دعم"
+  },
+  "toast": {
+    "memberAdded": "تمت إضافة العضو بنجاح!",
+    "memberUpdated": "تم تحديث العضو بنجاح!",
+    "memberDeleted": "تم حذف العضو بنجاح!",
+    "errorSaving": "خطأ في حفظ العضو",
+    "errorDeleting": "خطأ في حذف العضو",
+    "savedSuccessfully": "تم الحفظ بنجاح"
+  },
+  "deleteConfirm": {
+    "message": "هل أنت متأكد من حذف هذا العضو؟"
+  }
+}

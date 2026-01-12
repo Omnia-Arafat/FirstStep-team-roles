@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useApp } from '@/contexts/AppContext';
+import { useTranslation } from '@/hooks/useTranslation';
 import { Lock, Mail, X, AlertCircle, CheckCircle } from 'lucide-react';
 
 interface AdminDialogProps {
@@ -15,32 +16,11 @@ const RECOVERY_EMAIL = 'o.arafat@firststepsa.co';
 
 export default function AdminDialog({ isOpen, onClose, onAuthenticate }: AdminDialogProps) {
   const { language } = useApp();
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showRecovery, setShowRecovery] = useState(false);
   const [recoverySent, setRecoverySent] = useState(false);
-
-  const text = {
-    title: { en: 'Admin Authentication', ar: 'مصادقة المدير' },
-    passwordLabel: { en: 'Password', ar: 'كلمة المرور' },
-    passwordPlaceholder: { en: 'Enter admin password', ar: 'أدخل كلمة مرور المدير' },
-    loginButton: { en: 'Login', ar: 'تسجيل الدخول' },
-    cancelButton: { en: 'Cancel', ar: 'إلغاء' },
-    forgotPassword: { en: 'Forgot password?', ar: 'نسيت كلمة المرور؟' },
-    errorMessage: { en: 'Incorrect password', ar: 'كلمة المرور غير صحيحة' },
-    recoveryTitle: { en: 'Password Recovery', ar: 'استعادة كلمة المرور' },
-    recoveryMessage: {
-      en: `Password will be sent to: ${RECOVERY_EMAIL}`,
-      ar: `سيتم إرسال كلمة المرور إلى: ${RECOVERY_EMAIL}`
-    },
-    sendRecovery: { en: 'Send Password', ar: 'إرسال كلمة المرور' },
-    backToLogin: { en: 'Back to Login', ar: 'العودة لتسجيل الدخول' },
-    recoverySentTitle: { en: 'Password Sent!', ar: 'تم إرسال كلمة المرور!' },
-    recoverySentMessage: {
-      en: `Password has been sent to ${RECOVERY_EMAIL}`,
-      ar: `تم إرسال كلمة المرور إلى ${RECOVERY_EMAIL}`
-    },
-  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -50,7 +30,7 @@ export default function AdminDialog({ isOpen, onClose, onAuthenticate }: AdminDi
       onAuthenticate();
       onClose();
     } else {
-      setError(text.errorMessage[language]);
+      setError(t('adminDialog.errorMessage'));
     }
   };
 
@@ -92,12 +72,12 @@ export default function AdminDialog({ isOpen, onClose, onAuthenticate }: AdminDi
               </div>
             </div>
             <h2 className="text-2xl font-bold text-center mb-6 text-[var(--text)]">
-              {text.title[language]}
+              {t('adminDialog.title')}
             </h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block mb-2 text-sm font-medium text-[var(--text)]">
-                  {text.passwordLabel[language]}
+                  {t('adminDialog.passwordLabel')}
                 </label>
                 <input
                   type="password"
@@ -106,7 +86,7 @@ export default function AdminDialog({ isOpen, onClose, onAuthenticate }: AdminDi
                     setPassword(e.target.value);
                     setError('');
                   }}
-                  placeholder={text.passwordPlaceholder[language]}
+                  placeholder={t('adminDialog.passwordPlaceholder')}
                   className="w-full px-4 py-3 rounded-xl border-2 border-[var(--muted)] bg-[var(--bg)] text-[var(--text)] focus:border-[var(--blue)] outline-none"
                   autoFocus
                 />
@@ -123,7 +103,7 @@ export default function AdminDialog({ isOpen, onClose, onAuthenticate }: AdminDi
                 type="submit"
                 className="w-full py-3 rounded-xl bg-[var(--blue)] text-white font-semibold hover:opacity-90 transition-opacity mb-3"
               >
-                {text.loginButton[language]}
+                {t('adminDialog.loginButton')}
               </button>
 
               <button
@@ -131,7 +111,7 @@ export default function AdminDialog({ isOpen, onClose, onAuthenticate }: AdminDi
                 onClick={() => setShowRecovery(true)}
                 className="w-full py-2 text-sm text-[var(--blue)] hover:underline"
               >
-                {text.forgotPassword[language]}
+                {t('adminDialog.forgotPassword')}
               </button>
 
               <button
@@ -139,7 +119,7 @@ export default function AdminDialog({ isOpen, onClose, onAuthenticate }: AdminDi
                 onClick={handleClose}
                 className="w-full py-3 rounded-xl bg-[var(--muted)] text-white font-semibold hover:opacity-90 transition-opacity mt-2"
               >
-                {text.cancelButton[language]}
+                {t('adminDialog.cancelButton')}
               </button>
             </form>
           </>
@@ -153,22 +133,22 @@ export default function AdminDialog({ isOpen, onClose, onAuthenticate }: AdminDi
               </div>
             </div>
             <h2 className="text-2xl font-bold text-center mb-4 text-[var(--text)]">
-              {text.recoveryTitle[language]}
+              {t('adminDialog.recoveryTitle')}
             </h2>
             <p className="text-center text-[var(--muted)] mb-6">
-              {text.recoveryMessage[language]}
+              {t('adminDialog.recoveryMessage', { email: RECOVERY_EMAIL })}
             </p>
             <button
               onClick={handleRecovery}
               className="w-full py-3 rounded-xl bg-[var(--green)] text-white font-semibold hover:opacity-90 transition-opacity mb-3"
             >
-              {text.sendRecovery[language]}
+              {t('adminDialog.sendRecovery')}
             </button>
             <button
               onClick={() => setShowRecovery(false)}
               className="w-full py-3 rounded-xl bg-[var(--muted)] text-white font-semibold hover:opacity-90 transition-opacity"
             >
-              {text.backToLogin[language]}
+              {t('adminDialog.backToLogin')}
             </button>
           </>
         )}
@@ -181,10 +161,10 @@ export default function AdminDialog({ isOpen, onClose, onAuthenticate }: AdminDi
               </div>
             </div>
             <h2 className="text-2xl font-bold text-center mb-4 text-[var(--text)]">
-              {text.recoverySentTitle[language]}
+              {t('adminDialog.recoverySentTitle')}
             </h2>
             <p className="text-center text-[var(--muted)]">
-              {text.recoverySentMessage[language]}
+              {t('adminDialog.recoverySentMessage', { email: RECOVERY_EMAIL })}
             </p>
           </>
         )}

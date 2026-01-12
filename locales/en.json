@@ -1,0 +1,90 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "update": "Update",
+    "close": "Close",
+    "confirm": "Confirm",
+    "success": "Success",
+    "error": "Error"
+  },
+  "header": {
+    "title": "First Step Team",
+    "subtitle": "Click a card to view or edit responsibilities"
+  },
+  "controls": {
+    "themeToggle": "Switch Theme",
+    "languageToggle": "Switch Language",
+    "admin": "Admin",
+    "adminActive": "Admin Mode Active",
+    "adminLogin": "Admin Login"
+  },
+  "team": {
+    "addMember": "Add Team Member"
+  },
+  "teamCard": {
+    "viewDetails": "View details",
+    "clickToEdit": "Click to edit"
+  },
+  "teamModal": {
+    "editButton": "Edit Member",
+    "deleteButton": "Delete Member",
+    "frontendBadge": "Frontend Developer"
+  },
+  "adminDialog": {
+    "title": "Admin Authentication",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter admin password",
+    "loginButton": "Login",
+    "cancelButton": "Cancel",
+    "forgotPassword": "Forgot password?",
+    "errorMessage": "Incorrect password",
+    "recoveryTitle": "Password Recovery",
+    "recoveryMessage": "Password will be sent to: {{email}}",
+    "sendRecovery": "Send Password",
+    "backToLogin": "Back to Login",
+    "recoverySentTitle": "Password Sent!",
+    "recoverySentMessage": "Password has been sent to {{email}}"
+  },
+  "addMemberDialog": {
+    "titleAdd": "Add Team Member",
+    "titleEdit": "Edit Team Member",
+    "nameEn": "Name (English)",
+    "nameAr": "Name (Arabic)",
+    "roleEn": "Role (English)",
+    "roleAr": "Role (Arabic)",
+    "roleType": "Role Type",
+    "descEn": "Description (English)",
+    "descAr": "Description (Arabic)",
+    "detailsEn": "Responsibilities (English, one per line)",
+    "detailsAr": "Responsibilities (Arabic, one per line)",
+    "saveButton": "Add Member",
+    "updateButton": "Update",
+    "cancelButton": "Cancel"
+  },
+  "roleTypes": {
+    "owner": "Owner",
+    "cto": "CTO",
+    "pm": "Project Manager",
+    "design": "Designer",
+    "frontend": "Frontend Developer",
+    "backend": "Backend Developer",
+    "mobile": "Mobile Developer",
+    "support": "Support"
+  },
+  "toast": {
+    "memberAdded": "Member added successfully!",
+    "memberUpdated": "Member updated successfully!",
+    "memberDeleted": "Member deleted successfully!",
+    "errorSaving": "Error saving member",
+    "errorDeleting": "Error deleting member",
+    "savedSuccessfully": "Saved successfully"
+  },
+  "deleteConfirm": {
+    "message": "Are you sure you want to delete this team member?"
+  }
+}
