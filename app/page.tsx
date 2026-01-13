@@ -32,7 +32,12 @@ export default function Home() {
     fetch('/api/team')
       .then((res) => res.json())
       .then((data) => {
-        setTeamMembers(data);
+        if (Array.isArray(data)) {
+          setTeamMembers(data);
+        } else {
+          console.error('Unexpected /api/team response (expected array):', data);
+          setTeamMembers([]);
+        }
         setLoading(false);
       })
       .catch((error) => {

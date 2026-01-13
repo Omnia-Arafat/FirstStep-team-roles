@@ -9,9 +9,10 @@ interface TeamGridProps {
 }
 
 export default function TeamGrid({ members, onMemberClick }: TeamGridProps) {
+  const safeMembers = Array.isArray(members) ? members : [];
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-[26px]">
-      {members.map((member, index) => (
+      {safeMembers.map((member, index) => (
         <TeamCard
           key={member.id}
           member={member}
