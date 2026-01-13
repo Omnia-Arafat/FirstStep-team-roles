@@ -1,9 +1,10 @@
 // Use require for @prisma/client to avoid TypeScript type resolution issues on CI before client is generated
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-import { PrismaClient } from '@prisma/client';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const PrismaClient = require('@prisma/client').PrismaClient as any;
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+  prisma: any | undefined;
 };
 
 export const prisma =
