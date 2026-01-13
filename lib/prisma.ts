@@ -1,9 +1,12 @@
-import { PrismaClient } from '@prisma/client';
+// Use require for @prisma/client to avoid TypeScript type resolution issues on CI before client is generated
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { PrismaClient } = require('@prisma/client');
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
+type PrismaClientType = InstanceType<typeof PrismaClient>;
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+  prisma: PrismaClientType | undefined;
 };
 
 const createPrismaClient = () => {
@@ -12,6 +15,6 @@ const createPrismaClient = () => {
   return new PrismaClient({ adapter });
 };
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+export const prisma: PrismaClientType = globalForPrisma.prisma ?? createPrismaClient();
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
