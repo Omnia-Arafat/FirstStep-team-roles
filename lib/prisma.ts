@@ -4,30 +4,22 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+let prismaSingleton: PrismaClient | undefined;
 
-const connectionString = process.env.DATABASE_URL;
-if (!connectionString) {
-  throw new Error('DATABASE_URL is not set');
-}
+export function getPrisma(): PrismaClient {
+  if (prismaSingleton) return prismaSingleton;
 
-// Neon requires TLS. Ensure SSL is enabled for pg in serverless envs
-const pool = new Pool({
-  connectionString,
-  ssl: { rejectUnauthorized: false },
-});
+  const url = process.env.DATABASE_URL;
+  if (!url) {
+    throw new Error('DATABASE_URL is not set');
+  }
 
-const adapter = new PrismaPg(pool);
-
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    adapter,
-    log: ['error'],
+  const pool = new Pool({
+    connectionString: url,
+    ssl: { rejectUnauthorized: false },
   });
+  const adapter = new PrismaPg(pool);
 
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
+  prismaSingleton = new PrismaClient({ adapter, log: ['error'] });
+  return prismaSingleton;
 }

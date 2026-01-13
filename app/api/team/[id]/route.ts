@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { getPrisma } from '@/lib/prisma';
 import { TeamMember } from '@/types/team';
 
 export const runtime = 'nodejs';
@@ -13,6 +13,7 @@ export async function PUT(
     const { id } = await params;
     const updatedMember: TeamMember = await request.json();
 
+    const prisma = getPrisma();
     const result = await prisma.teamMember.update({
       where: { id },
       data: {
@@ -53,6 +54,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
+    const prisma = getPrisma();
     await prisma.teamMember.delete({
       where: { id },
     });

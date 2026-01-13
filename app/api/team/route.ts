@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { getPrisma } from '@/lib/prisma';
 import { TeamMember } from '@/types/team';
 
 export const runtime = 'nodejs';
@@ -7,6 +7,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
+    const prisma = getPrisma();
     const teamMembers = await prisma.teamMember.findMany();
 
     // Transform database model to app model
@@ -54,6 +55,7 @@ export async function POST(request: Request) {
   try {
     const memberData: Omit<TeamMember, 'id'> = await request.json();
     
+    const prisma = getPrisma();
     const newMember = await prisma.teamMember.create({
       data: {
         nameEn: memberData.name.en,
