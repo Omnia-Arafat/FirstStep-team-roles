@@ -40,11 +40,12 @@ export async function PUT(
 
     return NextResponse.json(transformed);
   } catch (error: any) {
-    if (error.code === 'P2025') {
+    if (error?.code === 'P2025') {
       return NextResponse.json({ error: 'Team member not found' }, { status: 404 });
     }
-    console.error('Error updating team member:', error);
-    return NextResponse.json({ error: 'Failed to update team member' }, { status: 500 });
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error updating team member:', message);
+    return NextResponse.json({ error: 'Failed to update team member', details: message }, { status: 500 });
   }
 }
 
@@ -61,10 +62,11 @@ export async function DELETE(
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
-    if (error.code === 'P2025') {
+    if (error?.code === 'P2025') {
       return NextResponse.json({ error: 'Team member not found' }, { status: 404 });
     }
-    console.error('Error deleting team member:', error);
-    return NextResponse.json({ error: 'Failed to delete team member' }, { status: 500 });
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error deleting team member:', message);
+    return NextResponse.json({ error: 'Failed to delete team member', details: message }, { status: 500 });
   }
 }

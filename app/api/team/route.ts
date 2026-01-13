@@ -46,8 +46,9 @@ export async function GET() {
     
     return NextResponse.json(sorted);
   } catch (error) {
-    console.error('Error fetching team members:', error);
-    return NextResponse.json({ error: 'Failed to fetch team members' }, { status: 500 });
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error fetching team members:', message);
+    return NextResponse.json({ error: 'Failed to fetch team members', details: message }, { status: 500 });
   }
 }
 
