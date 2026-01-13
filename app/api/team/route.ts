@@ -6,15 +6,11 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-// This is Vercel-friendly and works without relying on '@prisma/client' type re-exports
-export type DbMember = Awaited<ReturnType<typeof prisma.teamMember.findMany>>[number];
-
-export async function GET() {
   try {
     const teamMembers = await prisma.teamMember.findMany();
-    
+
     // Transform database model to app model
-const transformed: TeamMember[] = teamMembers.map((member: DbMember) => ({
+    const transformed: TeamMember[] = teamMembers.map((member: any) => ({
       id: member.id,
       name: { en: member.nameEn, ar: member.nameAr },
       role: { en: member.roleEn, ar: member.roleAr },
@@ -22,7 +18,7 @@ const transformed: TeamMember[] = teamMembers.map((member: DbMember) => ({
       desc: { en: member.descEn, ar: member.descAr },
       details: { en: member.detailsEn, ar: member.detailsAr },
     }));
-    
+
     // Define priority order: owner, cto, pm, then others
     const roleOrder: Record<string, number> = {
       owner: 1,
