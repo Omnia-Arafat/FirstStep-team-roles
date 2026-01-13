@@ -2,7 +2,10 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { TeamMember } from '@/types/team';
 
-// Infer the DB row type from the Prisma client to avoid importing Prisma namespace types
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+export async function GET() {
 // This is Vercel-friendly and works without relying on '@prisma/client' type re-exports
 export type DbMember = Awaited<ReturnType<typeof prisma.teamMember.findMany>>[number];
 
